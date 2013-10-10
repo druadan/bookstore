@@ -41,12 +41,21 @@ namespace Bookstore_Service
             {
 
                // SqlConnection customerConnection = new SqlConnection("Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=SSPI;");
-                SqlConnection customerConnection = new SqlConnection("Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm");
+                SqlConnection con = new SqlConnection("Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm");
                
-                customerConnection.Open();
-                SqlDataAdapter custAdapter = new SqlDataAdapter(
-                "SELECT * FROM dbo.Clients", customerConnection);
-                DataSet customerOrders = new DataSet();
+                con.Open();
+                SqlDataAdapter loginAdapter = new SqlDataAdapter("SELECT * FROM bookstore.dbo.Client", con);
+                DataSet logins = new DataSet();
+                loginAdapter.Fill(logins,"Client");
+               
+                String sd = logins.GetXml();
+
+                foreach (DataRow pRow in logins.Tables["Client"].Rows)
+                {
+                    String sas = logins.Tables[0].TableName;
+                    String s = pRow["name"].ToString();
+                    
+                }
             }
             catch (SqlException e)
             {

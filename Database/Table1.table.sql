@@ -1,13 +1,15 @@
-﻿DROP TABLE [dbo].[Order_details];
-DROP TABLE [dbo].[Order];
-DROP TABLE [dbo].[Review];
-DROP TABLE [dbo].[Tag_associations];
-DROP TABLE [dbo].[Client];
-DROP TABLE [dbo].[Book];
-DROP TABLE [dbo].[Salesman];
-DROP TABLE [dbo].[Tag];
+﻿USE Bookstore;
 
-CREATE TABLE [dbo].[Client]
+DROP TABLE [Order_details];
+DROP TABLE [Order];
+DROP TABLE [Review];
+DROP TABLE [Tag_associations];
+DROP TABLE [Client];
+DROP TABLE [Book];
+DROP TABLE [Salesman];
+DROP TABLE [Tag];
+
+CREATE TABLE [Client]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	name varchar(30), 
@@ -17,7 +19,7 @@ CREATE TABLE [dbo].[Client]
 	[password] varchar(8000) NOT NULL,
 )
 
-CREATE TABLE [dbo].[Book]
+CREATE TABLE [Book]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	title varchar(150), 
@@ -25,19 +27,19 @@ CREATE TABLE [dbo].[Book]
 	price float,
 )
 
-CREATE TABLE [dbo].[Salesman]
+CREATE TABLE [Salesman]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	name varchar(30), 
 	surname varchar(30),
 )
 
-CREATE TABLE [dbo].[Tag]
+CREATE TABLE [Tag]
 (
 	tag_id varchar(30) NOT NULL PRIMARY KEY, 
 )
 
-CREATE TABLE [dbo].[Order]
+CREATE TABLE [Order]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	customer_id int NOT NULL, 
@@ -48,7 +50,7 @@ CREATE TABLE [dbo].[Order]
 )
 
 
-CREATE TABLE [dbo].[Order_details]
+CREATE TABLE [Order_details]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	order_id int NOT NULL, 
@@ -58,7 +60,7 @@ CREATE TABLE [dbo].[Order_details]
 	foreign key ( book_id ) references Book (id)
 )
 
-CREATE TABLE [dbo].[Review]
+CREATE TABLE [Review]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	customer_id int NOT NULL, 
@@ -70,7 +72,7 @@ CREATE TABLE [dbo].[Review]
 )
 
 
-CREATE TABLE [dbo].[Tag_associations]
+CREATE TABLE [Tag_associations]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1),
 	tag_id varchar(30) NOT NULL,
@@ -141,6 +143,6 @@ VALUES
 
 DROP login adm ;
 CREATE login adm with password = 'adm';
-
-select * from master..syslogins
-where name = 'adm' or name like  '%Druadan%';
+DROP USER adm;
+CREATE USER adm from login adm;
+EXEC sp_addrolemember 'db_owner', 'adm'
