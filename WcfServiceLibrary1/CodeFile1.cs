@@ -47,17 +47,22 @@ namespace Bookstore_Service
                 SqlDataAdapter loginAdapter = new SqlDataAdapter("SELECT * FROM bookstore.dbo.Client", con);
                 DataSet logins = new DataSet();
                 loginAdapter.Fill(logins,"Client");
-               
-                String sd = logins.GetXml();
 
-                foreach (DataRow pRow in logins.Tables["Client"].Rows)
+                DataTable clientTable = logins.Tables["Client"];
+                DataColumn[] pk = new DataColumn[1];
+                pk[0] = clientTable.Columns["login"];
+                clientTable.PrimaryKey = pk;
+
+                bool userExists = clientTable.Rows.Contains(login);
+                DataRow row = clientTable.Rows.Find(login);
+
+                if (row != null && row["password"].Equals(password))
                 {
-                    String sas = logins.Tables[0].TableName;
-                    String s = pRow["name"].ToString();
-                    
+                    return 0;
                 }
+                return 1;
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 System.Console.WriteLine(e.Message);
             }

@@ -1,4 +1,6 @@
-﻿USE Bookstore;
+﻿DROP database Bookstore;
+CREATE database Bookstore;
+USE Bookstore;
 
 DROP TABLE [Order_details];
 DROP TABLE [Order];
@@ -11,7 +13,7 @@ DROP TABLE [Tag];
 
 CREATE TABLE [Client]
 (
-	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
+	[login] varchar(30) NOT NULL PRIMARY KEY, 
 	name varchar(30), 
 	surname varchar(50),
 	[address] varchar(100),
@@ -42,10 +44,10 @@ CREATE TABLE [Tag]
 CREATE TABLE [Order]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
-	customer_id int NOT NULL, 
+	customer_login varchar(30) NOT NULL, 
 	order_date date, 
 	salesman_id int,
-	foreign key (customer_id ) references Client (id),
+	foreign key (customer_login ) references Client ([login]),
 	foreign key (salesman_id ) references Salesman (id)
 )
 
@@ -63,11 +65,11 @@ CREATE TABLE [Order_details]
 CREATE TABLE [Review]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
-	customer_id int NOT NULL, 
+	customer_login varchar(30) NOT NULL, 
 	book_id int NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(8000) NOT NULL,
-	foreign key ( customer_id ) references Client (id),
+	foreign key ( customer_login ) references Client ([login]),
 	foreign key ( book_id ) references Book (id)
 )
 
@@ -82,10 +84,12 @@ CREATE TABLE [Tag_associations]
 )
 
 
-INSERT into Client(name, surname, [address], loyal_client, [password])
+INSERT into Client
 VALUES 
-( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
-( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
+--( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
+--( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
+( 'pr','Piotr','Reszke','Luzino', 0, 'pr'),
+( 'om','Olga', 'M','Luzino', 1, 'om')
 ;
 
 INSERT into Book(title, author, price)
@@ -111,19 +115,19 @@ VALUES
 ( 'so_experience' )
 ;
 
-INSERT into [Order](customer_id, order_date, salesman_id)
+INSERT into [Order](customer_login, order_date, salesman_id)
 VALUES 
-( 1, '2013-12-01', 1 ),
-( 2, '2011-04-21', 1 )
+( 'pr', '2013-12-01', 1 ),
+( 'om', '2011-04-21', 1 )
 ;
 
 
 
-INSERT into [Review] (customer_id, book_id, title, content)
+INSERT into [Review] (customer_login, book_id, title, content)
 VALUES 
-( 1, 2, 'no nie wiem', 'taka sobie, mogla by byc fajniejsza' ),
-( 1, 1, 'super', 'polecam każdemu' ),
-( 2, 2, 'troche nudna', 'ale da się przeczytac' )
+( 'pr', 2, 'no nie wiem', 'taka sobie, mogla by byc fajniejsza' ),
+( 'om', 1, 'super', 'polecam każdemu' ),
+( 'om', 2, 'troche nudna', 'ale da się przeczytac' )
 ;
 
 INSERT into [Tag_associations] (tag_id, book_id)

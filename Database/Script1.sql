@@ -1,3 +1,4 @@
-﻿select * from Bookstore.dbo.Client;
+﻿DROP DATABASE Bookstore;
+CREATE DATABASE Bookstore;
+
 USE Bookstore;
-select * from Client;
