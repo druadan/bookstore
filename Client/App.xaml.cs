@@ -13,6 +13,7 @@ namespace Client
     public partial class App : Application
     {
         public static String sessionToken = "";
+        public static String login = "";
 
     }
 }

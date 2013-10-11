@@ -28,9 +28,48 @@ namespace Client
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void searchButton_Click(object sender, RoutedEventArgs e)
         {
+            Window nextWindow = new SearchWindow();
+            App.Current.MainWindow = nextWindow;
+            this.Close();
+            nextWindow.Show();
         }
+
+        private void logoutButtion_Click(object sender, RoutedEventArgs e)
+        {
+            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            {
+                
+                try
+                {
+                    IBookstore proxy = factory.CreateChannel();
+                    int result = proxy.Logout(App.login, App.sessionToken);
+
+                    if (result != 0)
+                    {
+                        MessageBox.Show("Błąd podczas wylogowywania!");
+                    }
+                    else
+                    {
+                        App.sessionToken = "";
+                        App.login = "";
+
+                        Window nextWindow = new LogonWindow();
+                        App.Current.MainWindow = nextWindow;
+                        this.Close();
+                        nextWindow.Show();
+                    }
+
+                }
+                catch (FaultException<InternalError> err)
+                {
+                    MessageBox.Show(err.Detail.ToString());
+                }
+
+            }
+        }
+
            
     }
 }

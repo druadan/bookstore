@@ -10,6 +10,12 @@ DROP TABLE [Client];
 DROP TABLE [Book];
 DROP TABLE [Salesman];
 DROP TABLE [Tag];
+DROP TABLE [Category];
+
+CREATE TABLE [Category]
+(
+	[name] varchar(30) NOT NULL PRIMARY KEY
+)
 
 CREATE TABLE [Client]
 (
@@ -26,7 +32,9 @@ CREATE TABLE [Book]
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	title varchar(150), 
 	author varchar(50),
+	category varchar(30),
 	price float,
+	foreign key (category ) references Category (name),
 )
 
 CREATE TABLE [Salesman]
@@ -92,12 +100,22 @@ VALUES
 ( 'om','Olga', 'M','Luzino', 1, 'om')
 ;
 
-INSERT into Book(title, author, price)
+INSERT into Category
 VALUES 
-( 'Gotuj z Olgella', 'Olgella', 1000),
-( 'Kot jest gupi', 'PR', 34),
-( 'Szerlok', 'Doyle', 66),
-( 'Robinson', 'xxx', 88.1)
+--( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
+--( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
+( 'Kucharska'),
+( 'Dokumentalna'),
+( 'Biografia'),
+( 'Przygodowa' )
+;
+
+INSERT into Book(title, author, category, price)
+VALUES 
+( 'Gotuj z Olgella', 'Olgella', 'Kucharska',1000),
+( 'Kot jest gupi', 'PR', 'Przygodowa', 34),
+( 'Szerlok', 'Doyle', 'Biografia',66),
+( 'Robinson', 'xxx', 'Przygodowa', 88.1)
 ;
 
 INSERT into Salesman(name, surname)

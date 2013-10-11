@@ -1,0 +1,18 @@
+﻿<Window x:Class="Client.SearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SearchWindow" Height="397" Width="652">
+    <Grid>
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,29,0,0" Name="textBlock1" Text="Szukaj książki" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="90,87,0,0" Name="textBox1" VerticalAlignment="Top" Width="120" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="14,90,0,0" Name="textBlock2" Text="Tytuł" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,123,0,0" Name="textBlock3" Text="Autor" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,123,420,0" Name="textBox2" VerticalAlignment="Top" Width="120"  />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="14,158,0,0" Name="textBlock4" Text="Tag" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,158,420,0" Name="textBox3" VerticalAlignment="Top" Width="120" />
+        <RadioButton Content="Wszystkie kryteria spełnione" Height="16" HorizontalAlignment="Left" Margin="14,202,0,0" Name="radioButton1" VerticalAlignment="Top"  />
+        <RadioButton Content="Którekolwiek kryterium spełnione" Height="16" HorizontalAlignment="Left" Margin="14,0,0,118" Name="radioButton2" VerticalAlignment="Bottom" />
+        <Button Content="Szukaj" Height="23" HorizontalAlignment="Left" Margin="14,263,0,0" Name="searchButton" VerticalAlignment="Top" Width="75" Click="searchButton_Click" />
+        <DataGrid AutoGenerateColumns="False" Height="340" HorizontalAlignment="Left" Margin="285,18,0,0" Name="dataGrid1" VerticalAlignment="Top" Width="345" />
+    </Grid>
+</Window>

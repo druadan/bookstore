@@ -36,6 +36,9 @@ namespace Bookstore_Service
 
         [OperationContract]
         int Logout(string login, string sessionToken);
+
+        [OperationContract]
+        int Search(string title, string author, string category, string tag);
     }
 
 

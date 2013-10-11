@@ -33,20 +33,21 @@ namespace Client
                 try
                 {
                     IBookstore proxy = factory.CreateChannel();
-                    obtaintedToken = proxy.Login(loginTextBox.Text, passwordTextBox.Text);
+                    obtaintedToken = proxy.Login(loginTextBox.Text, passwordTextBox.Password);
 
                     if ("".Equals(obtaintedToken))
                     {
-                        MessageBox.Show("Błędny login lub haslo");
+                        MessageBox.Show("Błędny login lub hasło");
                     }
                     else
                     {
                         App.sessionToken = obtaintedToken;
-                        MessageBox.Show("W pytę!");
-                        MainWindow main = new MainWindow();
-                        App.Current.MainWindow = main;
+                        App.login = loginTextBox.Text;
+
+                        Window nextWindow = new MainWindow();
+                        App.Current.MainWindow = nextWindow;
                         this.Close();
-                        main.Show();
+                        nextWindow.Show();
                     }
 
                 }
