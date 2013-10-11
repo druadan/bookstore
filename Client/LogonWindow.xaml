@@ -1,0 +1,13 @@
+﻿<Window x:Class="Client.LogonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LogonWindow" Height="300" Width="300">
+    <Grid>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="89,88,0,0" Name="loginTextBox" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="89,153,0,0" Name="passwordTextBox" VerticalAlignment="Top" Width="120" />
+        <Button Content="Zaloguj się" Height="23" HorizontalAlignment="Left" Margin="106,201,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="89,46,0,0" Name="textBlock1" Text="Logowanie" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="44,88,0,0" Name="textBlock2" Text="Login" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="43,153,0,0" Name="textBlock3" Text="Hasło" VerticalAlignment="Top" />
+    </Grid>
+</Window>

@@ -6,6 +6,10 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Data.SqlClient;
 using System.Data;
+using System.Security.Cryptography;
+using System.IdentityModel.Selectors;
+using System.Windows.Forms;
+
 namespace Bookstore_Service
 {
     [DataContract]
@@ -30,20 +34,33 @@ namespace Bookstore_Service
               [OperationContract]
                int Division(Maths obj4);*/
         [OperationContract]
-        int Login(string login, string password);
+        string Login(string login, string password);
+        int Logout(string login, string sessionToken);
+    }
+
+    public class CustomUserNameValidator : UserNamePasswordValidator
+    {
+         public override void Validate(string userName, string password)
+         {
+            if(userName.Equals("pr1")){
+                return;
+            }
+         }
     }
 
     class Bookstore : IBookstore
     {
-        public int Login(string login, string password)
+        String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm";
+        Dictionary<String, List<String>> loggedUsers = new Dictionary<string, List<string>>();
+
+        public string Login(string login, string password)
         {
             try
             {
-
-               // SqlConnection customerConnection = new SqlConnection("Data Source=(local);Initial Catalog=AdventureWorks;Integrated Security=SSPI;");
-                SqlConnection con = new SqlConnection("Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm");
-               
+              
+                SqlConnection con = new SqlConnection(sqlConnectionString);
                 con.Open();
+
                 SqlDataAdapter loginAdapter = new SqlDataAdapter("SELECT * FROM bookstore.dbo.Client", con);
                 DataSet logins = new DataSet();
                 loginAdapter.Fill(logins,"Client");
@@ -53,20 +70,54 @@ namespace Bookstore_Service
                 pk[0] = clientTable.Columns["login"];
                 clientTable.PrimaryKey = pk;
 
-                bool userExists = clientTable.Rows.Contains(login);
-                DataRow row = clientTable.Rows.Find(login);
+                DataRow userRow = clientTable.Rows.Find(login);
 
-                if (row != null && row["password"].Equals(password))
+                if (userRow != null && userRow["password"].Equals(password))
                 {
-                    return 0;
+                    var s = new StringBuilder();
+                    SHA1 hasher = SHA1.Create();
+                    foreach (byte b in hasher.ComputeHash(Encoding.UTF8.GetBytes(login)))
+                        s.Append(b.ToString("x2").ToLower());
+
+                    // adding new token to logged in users
+                    if ( !loggedUsers.ContainsKey(login) )
+                    {
+                        loggedUsers.Add(login, new List<String>());
+                    }
+                    loggedUsers[login].Add(s.ToString());
+
+                    return s.ToString();
+                    
                 }
-                return 1;
+                return "";
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message);
             }
-            return 0;
+
+            return "";
+        }
+
+
+        public int Logout(string login, string sessionToken)
+        {
+            try
+            {
+                if (loggedUsers[login] == null)
+                {
+                    return 1;
+                }else if( loggedUsers[login].Remove(sessionToken) ){
+                    return 0;
+                }
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            return 1;
         }
     }
 }
