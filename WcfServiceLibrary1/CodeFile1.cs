@@ -13,40 +13,30 @@ using System.Windows.Forms;
 namespace Bookstore_Service
 {
     [DataContract]
-    public class Maths
+    public class InternalError
     {
+        [DataMember]
+        public int Result { get; set; }
+        [DataMember]
+        public string ErrorMessage { get; set; }
 
-        [DataMember]
-        public int Number1 { get; set; }
-        [DataMember]
-        public int Number2 { get; set; }
+        override public string ToString()
+        {
+            return "Result: " + this.Result.ToString() + "\n\nError message: " + this.ErrorMessage.ToString();
+        }
     }
 
     [ServiceContract]
     public interface IBookstore
     {
-        /*      [OperationContract]
-               int Addition(Maths obj1);
-              [OperationContract]
-               int Subtraction(Maths obj2);
-              [OperationContract]
-               int Multiplication(Maths obj3);
-              [OperationContract]
-               int Division(Maths obj4);*/
         [OperationContract]
+        [FaultContract(typeof(InternalError))]
         string Login(string login, string password);
+
+        [OperationContract]
         int Logout(string login, string sessionToken);
     }
 
-    public class CustomUserNameValidator : UserNamePasswordValidator
-    {
-         public override void Validate(string userName, string password)
-         {
-            if(userName.Equals("pr1")){
-                return;
-            }
-         }
-    }
 
     class Bookstore : IBookstore
     {
@@ -60,6 +50,7 @@ namespace Bookstore_Service
               
                 SqlConnection con = new SqlConnection(sqlConnectionString);
                 con.Open();
+                
 
                 SqlDataAdapter loginAdapter = new SqlDataAdapter("SELECT * FROM bookstore.dbo.Client", con);
                 DataSet logins = new DataSet();
@@ -72,6 +63,7 @@ namespace Bookstore_Service
 
                 DataRow userRow = clientTable.Rows.Find(login);
 
+
                 if (userRow != null && userRow["password"].Equals(password))
                 {
                     var s = new StringBuilder();
@@ -83,6 +75,7 @@ namespace Bookstore_Service
                     if ( !loggedUsers.ContainsKey(login) )
                     {
                         loggedUsers.Add(login, new List<String>());
+                        throw new Exception();
                     }
                     loggedUsers[login].Add(s.ToString());
 
@@ -93,7 +86,10 @@ namespace Bookstore_Service
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Logowanie nie powiodło się z powodu wewnętrznego błędu serwera";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
 
             return "";

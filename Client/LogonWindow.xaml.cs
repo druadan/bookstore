@@ -29,21 +29,32 @@ namespace Client
         {
             using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
             {
-                IBookstore proxy = factory.CreateChannel();
-                string obtaintedToken = proxy.Login(loginTextBox.Text,passwordTextBox.Text);
-                if (obtaintedToken.Equals(""))
+                string obtaintedToken = null;
+                try
                 {
-                    MessageBox.Show("Logowanie nie powiodło się");
+                    IBookstore proxy = factory.CreateChannel();
+                    obtaintedToken = proxy.Login(loginTextBox.Text, passwordTextBox.Text);
+
+                    if ("".Equals(obtaintedToken))
+                    {
+                        MessageBox.Show("Błędny login lub haslo");
+                    }
+                    else
+                    {
+                        App.sessionToken = obtaintedToken;
+                        MessageBox.Show("W pytę!");
+                        MainWindow main = new MainWindow();
+                        App.Current.MainWindow = main;
+                        this.Close();
+                        main.Show();
+                    }
+
                 }
-                else
+                catch (FaultException<InternalError> err)
                 {
-                    App.sessionToken = obtaintedToken;
-                    MessageBox.Show("W pytę!");
-                    MainWindow main = new MainWindow();
-                    App.Current.MainWindow = main;
-                    this.Close();
-                    main.Show();
+                    MessageBox.Show( err.Detail.ToString() );
                 }
+
             }
         }
     }
