@@ -15,27 +15,9 @@ using System.ServiceModel;
 
 namespace Bookstore_Service.DBClasses
 {
-    class ClientS
+    class ClientS : Client
     {
-
-        /*       	
-           age int not null,
-           education varchar(30) NOT NULL,
-           preferredCat varchar(30) not null,
-           preferredCat2 varchar(30) not null,
-               */
-
-
-        public String login;
-        public String name;
-        public String surname;
-        public String address;
-        public int loyal_client;
         public String password;
-        public int age;
-        public String education;
-        public String preferredCat;
-        public String preferredCat2;
 
         public ClientS(string login){
                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
@@ -66,7 +48,7 @@ namespace Bookstore_Service.DBClasses
                 this.password = userRow["password"].ToString();
                 this.age = Convert.ToInt32(userRow["age"].ToString());
                 this.education = userRow["education"].ToString();
-                this.preferredCat = userRow["preferredCat2"].ToString();
+                this.preferredCat = userRow["preferredCat"].ToString();
                 this.preferredCat2 = userRow["preferredCat2"].ToString();
                 
         }
@@ -74,20 +56,18 @@ namespace Bookstore_Service.DBClasses
        
     }
 
-    public class Client
+    [DataContract]
+    public class Client : OtherClient
     {
-
-        public String login;
-        public String name;
+         [DataMember]
         public String surname;
+         [DataMember]
         public String address;
+         [DataMember]
         public int loyal_client;
-        public int age;
-        public String education;
-        public String preferredCat;
-        public String preferredCat2;
 
-        public Client(string login, string name, string surname, string address, int loyal_client, int age, string education, string preferredCat, string preferredCat2)
+
+        public Client(string login, string name, string surname, string address, int loyal_client, int age, string education, string preferredCat, string preferredCat2) : base( login,  name, age, education,  preferredCat,  preferredCat2)
         {
             this.login = login;
             this.name = name;
@@ -103,6 +83,8 @@ namespace Bookstore_Service.DBClasses
         public Client()
         {
         }
+
+
 
     }
 
@@ -131,5 +113,7 @@ namespace Bookstore_Service.DBClasses
             this.preferredCat = preferredCat;
             this.preferredCat2 = preferredCat2;
         }
+
+        public OtherClient() { }
     }
 }
