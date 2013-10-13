@@ -23,6 +23,8 @@ namespace Client
     {
         Book book;
         List<Review> reviewsList;
+        int reviewInd;
+       
         public BookDetailsWindow(Book b)
         {
             InitializeComponent();
@@ -40,6 +42,7 @@ namespace Client
                     IBookstore proxy = factory.CreateChannel();
                     reviewsList = new List<Review>(proxy.GetReviews(b.id));
 
+                    avgScoreTextBlock.Text = proxy.GetAverageScore(b.id).ToString();
                 }
                 catch (FaultException<InternalError> err)
                 {
@@ -47,6 +50,44 @@ namespace Client
                 }
             }
 
+            
+
+            reviewInd = 0;
+            refreshReview();
+
+        }
+
+        private void refreshReview()
+        {
+            Review r = reviewsList[reviewInd];
+
+            reviewAuthorTextBlock.Text = r.customer_login;
+            reviewTitleTextBlock.Text = r.title;
+            reviewContentTextBlock.Text = r.content;
+            scoreTextBlock.Text = r.score.ToString();
+
+            prevReviewButton.IsEnabled = reviewInd > 0;
+            nextReviewButton.IsEnabled = reviewsList.Count - 1 > reviewInd;
+        }
+
+        private void prevReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            reviewInd--;
+            refreshReview();
+        }
+
+        private void nextReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            reviewInd++;
+            refreshReview();
+        }
+
+        private void reviewAuthorTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Window nextWindow = new UserDetailsWindow();
+            App.Current.MainWindow = nextWindow;
+            this.Close();
+            nextWindow.Show();
         }
     }
 }

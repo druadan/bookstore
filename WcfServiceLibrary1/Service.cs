@@ -43,6 +43,10 @@ namespace Bookstore_Service
         [OperationContract]
         [FaultContract(typeof(InternalError))]
         Review[] GetReviews(int book_id);
+
+        [OperationContract]
+        double GetAverageScore(int book_id);
+
     }
 
 
@@ -56,7 +60,7 @@ namespace Bookstore_Service
             try
             {
 
-                Client c = Client.getClient(login);
+                ClientS c = new ClientS(login);
                 if (c == null)
                 {
                     return "";
@@ -127,31 +131,27 @@ namespace Bookstore_Service
 
         public Review[] GetReviews(int book_id)
         {
+            return Review.getReviews(book_id);
+
+        }
+
+        public double GetAverageScore(int book_id)
+        {
+            Review[] reviews = Review.getReviews(book_id);
+            double sum = 0.0;
+            foreach (Review r in reviews)
+            {
+                sum += r.score;
+            }
+
             try
             {
-                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
-                con.Open();
-                
-                SqlCommand cmd = new SqlCommand("SELECT r.* FROM bookstore.dbo.Review R JOIN bookstore.dbo.Book B ON R.book_id = B.id WHERE book_id = @bookID ; ", con);
-                cmd.Parameters.AddWithValue("@bookID", book_id);
+                return sum / reviews.Length;
 
-                SqlDataReader rdr = cmd.ExecuteReader();
-                
-                List<Review> reviewList = new List<Review>();
-
-                while (rdr.Read())
-                {
-                    Review r = new Review(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3),  rdr.GetString(4), rdr.GetDouble(5));
-                    reviewList.Add(r);         
-                }
-                return reviewList.ToArray();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                InternalError fault = new InternalError();
-                fault.Result = 1;
-                fault.ErrorMessage = "Błąd podczas wyszukiwania komentarzy";
-                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+                return 0.0;
             }
 
         }

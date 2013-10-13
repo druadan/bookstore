@@ -9,14 +9,26 @@ using System.Windows.Forms;
 
 namespace Bookstore_Service.DBClasses
 {
-    class Client
+    class ClientS
     {
 
+ /*       	[login] varchar(30) NOT NULL PRIMARY KEY, 
+	name varchar(30), 
+	surname varchar(50),
+	[address] varchar(100),
+	loyal_client int,
+	[password] varchar(8000) NOT NULL,
+        */
 
+        
         public String login;
+        public String name;
+        public String surname;
+        public String address;
+        public int loyal_client;
         public String password;
 
-        static public Client getClient(string login){
+        public ClientS(string login){
                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
                con.Open();
                 
@@ -34,16 +46,47 @@ namespace Bookstore_Service.DBClasses
 
                 if (userRow == null)
                 {
-                    return null;
+                    throw new Exception("Couldn't find such user"); 
                 }
-
-                Client c = new Client();
-                c.login = login;
-                c.password = userRow["password"].ToString();
-
-                return c;
-
         }
        
+       
+    }
+
+    class Client
+    {
+
+        public String login;
+        public String name;
+        public String surname;
+        public String address;
+        public int loyal_client;
+
+        public Client(string login, string name, string surname, string address, int loyal_client)
+        {
+            this.login = login;
+            this.name = name;
+            this.surname = surname;
+            this.address = address;
+            this.loyal_client = loyal_client;
+        }
+
+        public Client()
+        {
+        }
+
+    }
+
+    class OtherClient
+    {
+
+        public String login;
+        public String name;
+
+        public OtherClient(string login, string name)
+        {
+            this.login = login;
+            this.name = name;
+        }
     }
 }
