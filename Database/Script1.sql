@@ -1,13 +1,3 @@
-﻿DROP database Bookstore;
-CREATE database Bookstore;
-USE Bookstore;
-
-DROP TABLE [Order_details];
-DROP TABLE [Order];
-DROP TABLE [Review];
-DROP TABLE [Tag_associations];
-DROP TABLE [Client];
-DROP TABLE [Book];
-DROP TABLE [Salesman];
-DROP TABLE [Tag];
-DROP TABLE [Category];
+﻿
+--select DISTINCT * from Bookstore.dbo.Book b join Bookstore.dbo.Tag_association ta on ta.book_id = b.id and  title = 'Szerlok';
+SELECT DISTINCT b.* FROM bookstore.dbo.Book b JOIN bookstore.dbo.Tag_association ta on ta.book_id = b.id  WHERE  title = @titleCond      tag_id = @tagCond ;

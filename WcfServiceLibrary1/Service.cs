@@ -37,8 +37,9 @@ namespace Bookstore_Service
         [OperationContract]
         int Logout(string login, string sessionToken);
 
+        
         [OperationContract]
-        int Search(string title, string author, string category, string tag);
+        Book[] Search(string title, string author, string category, string tag, int allOrAny);
     }
 
 
@@ -113,6 +114,12 @@ namespace Bookstore_Service
             }
 
             return 1;
+        }
+
+        public Book[] Search(string title, string author, string category, string tag, int allOrAny)
+        {
+            return Book.getBooks(title, author, category, tag, allOrAny);
+            
         }
     }
 }

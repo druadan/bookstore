@@ -2,10 +2,10 @@
 CREATE database Bookstore;
 USE Bookstore;
 
-DROP TABLE [Order_details];
+DROP TABLE [Order_detail];
 DROP TABLE [Order];
 DROP TABLE [Review];
-DROP TABLE [Tag_associations];
+DROP TABLE [Tag_association];
 DROP TABLE [Client];
 DROP TABLE [Book];
 DROP TABLE [Salesman];
@@ -60,7 +60,7 @@ CREATE TABLE [Order]
 )
 
 
-CREATE TABLE [Order_details]
+CREATE TABLE [Order_detail]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
 	order_id int NOT NULL, 
@@ -82,7 +82,7 @@ CREATE TABLE [Review]
 )
 
 
-CREATE TABLE [Tag_associations]
+CREATE TABLE [Tag_association]
 (
 	id int NOT NULL PRIMARY KEY IDENTITY(1,1),
 	tag_id varchar(30) NOT NULL,
@@ -112,9 +112,9 @@ VALUES
 
 INSERT into Book(title, author, category, price)
 VALUES 
+( 'Szerlok', 'Doyle', 'Biografia',66),
 ( 'Gotuj z Olgella', 'Olgella', 'Kucharska',1000),
 ( 'Kot jest gupi', 'PR', 'Przygodowa', 34),
-( 'Szerlok', 'Doyle', 'Biografia',66),
 ( 'Robinson', 'xxx', 'Przygodowa', 88.1)
 ;
 
@@ -148,7 +148,7 @@ VALUES
 ( 'om', 2, 'troche nudna', 'ale da się przeczytac' )
 ;
 
-INSERT into [Tag_associations] (tag_id, book_id)
+INSERT into [Tag_association] (tag_id, book_id)
 VALUES 
 ( 'wow', 2),
 ( 'wow', 1),
@@ -156,7 +156,7 @@ VALUES
 ( 'so_experience', 3)
 ;
 
-INSERT into [Order_details] (order_id, book_id, quantity)
+INSERT into [Order_detail] (order_id, book_id, quantity)
 VALUES 
 ( 1, 2, 1 ),
 ( 2, 1, 3 ),
