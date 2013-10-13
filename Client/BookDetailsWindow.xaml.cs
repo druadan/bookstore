@@ -84,7 +84,7 @@ namespace Client
 
         private void reviewAuthorTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Window nextWindow = new OtherUserDetailsWindow();
+            Window nextWindow = new OtherUserDetailsWindow(reviewAuthorTextBlock.Text);
             App.Current.MainWindow = nextWindow;
             this.Close();
             nextWindow.Show();

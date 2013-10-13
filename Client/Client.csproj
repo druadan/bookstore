@@ -61,6 +61,9 @@
     <Compile Include="BookDetailsWindow.xaml.cs">
       <DependentUpon>BookDetailsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OtherUserDetailsWindow.xaml.cs">
+      <DependentUpon>OtherUserDetailsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OtherUserDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SearchWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

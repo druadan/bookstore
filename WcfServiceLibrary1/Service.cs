@@ -47,6 +47,10 @@ namespace Bookstore_Service
         [OperationContract]
         double GetAverageScore(int book_id);
 
+        [OperationContract]
+        OtherClient GetOtherClient(string login);
+
+
     }
 
 
@@ -154,6 +158,12 @@ namespace Bookstore_Service
                 return 0.0;
             }
 
+        }
+
+        public OtherClient GetOtherClient(string login)
+        {
+            ClientS cs = new ClientS(login);
+            return new OtherClient(cs.login, cs.name,cs.age,cs.education,cs.preferredCat,cs.preferredCat2);
         }
     }
 }

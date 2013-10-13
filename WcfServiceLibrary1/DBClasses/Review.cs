@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Data.SqlClient;
-using System.Data;
-using System.Security.Cryptography;
-using System.IdentityModel.Selectors;
-using System.Windows.Forms;
-using Bookstore_Service.DBClasses;
 
 namespace Bookstore_Service.DBClasses
 {

@@ -3,6 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="OtherUserDetailsWindow" Height="300" Width="300">
     <Grid>
-        
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,52,0,0" Name="textBlock1" Text="Imię" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,52,0,0" Name="nameTB" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="118,23,0,215" Name="loginTB" Text="TextBlock" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,23,0,0" Name="textBlock4" Text="Login" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,139,0,0" Name="textBlock6" Text="Ulubione gatunki" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,81,0,0" Name="ageTB" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,81,0,0" Name="textBlock8" Text="Wiek" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,139,0,0" Name="preferredTB" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,110,0,0" Name="textBlock2" Text="Wykształcenie" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,110,0,0" Name="educationTB" Text="TextBlock" VerticalAlignment="Top" />
     </Grid>
 </Window>

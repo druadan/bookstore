@@ -6,6 +6,12 @@ using Bookstore_Service;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+
 
 namespace Bookstore_Service.DBClasses
 {
@@ -53,13 +59,22 @@ namespace Bookstore_Service.DBClasses
                 }
 
                 this.login = login;
-            this.name = 
+                this.name = userRow["name"].ToString();
+                this.surname = userRow["surname"].ToString();
+                this.address = userRow["address"].ToString();
+                this.loyal_client = Convert.ToInt32(userRow["loyal_client"].ToString());
+                this.password = userRow["password"].ToString();
+                this.age = Convert.ToInt32(userRow["age"].ToString());
+                this.education = userRow["education"].ToString();
+                this.preferredCat = userRow["preferredCat2"].ToString();
+                this.preferredCat2 = userRow["preferredCat2"].ToString();
+                
         }
        
        
     }
 
-    class Client
+    public class Client
     {
 
         public String login;
@@ -67,14 +82,22 @@ namespace Bookstore_Service.DBClasses
         public String surname;
         public String address;
         public int loyal_client;
+        public int age;
+        public String education;
+        public String preferredCat;
+        public String preferredCat2;
 
-        public Client(string login, string name, string surname, string address, int loyal_client)
+        public Client(string login, string name, string surname, string address, int loyal_client, int age, string education, string preferredCat, string preferredCat2)
         {
             this.login = login;
             this.name = name;
             this.surname = surname;
             this.address = address;
             this.loyal_client = loyal_client;
+            this.age = age;
+            this.education = education;
+            this.preferredCat = preferredCat;
+            this.preferredCat2 = preferredCat2;
         }
 
         public Client()
@@ -83,16 +106,30 @@ namespace Bookstore_Service.DBClasses
 
     }
 
-    class OtherClient
+    [DataContract]
+    public class OtherClient
     {
-
+        [DataMember]
         public String login;
+        [DataMember]
         public String name;
+        [DataMember]
+        public int age;
+        [DataMember]
+        public String education;
+        [DataMember]
+        public String preferredCat;
+        [DataMember]
+        public String preferredCat2;
 
-        public OtherClient(string login, string name)
+        public OtherClient(string login, string name, int age, string education, string preferredCat, string preferredCat2)
         {
             this.login = login;
             this.name = name;
+            this.age = age;
+            this.education = education;
+            this.preferredCat = preferredCat;
+            this.preferredCat2 = preferredCat2;
         }
     }
 }

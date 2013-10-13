@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.ServiceModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Bookstore_Service;
+using Bookstore_Service.DBClasses;
 
 namespace Client
 {
@@ -18,9 +10,32 @@ namespace Client
     /// </summary>
     public partial class OtherUserDetailsWindow : Window
     {
-        public OtherUserDetailsWindow()
+
+       
+        public OtherUserDetailsWindow(string userLogin)
         {
             InitializeComponent();
+
+            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            {
+                try
+                {
+                    IBookstore proxy = factory.CreateChannel();
+
+                    OtherClient oc = proxy.GetOtherClient(userLogin);
+                    ageTB.Text = oc.age.ToString();
+                    loginTB.Text = oc.login;
+                    educationTB.Text = oc.education;
+                    nameTB.Text = oc.name;
+                    preferredTB.Text = oc.preferredCat + ", " + oc.preferredCat2;
+
+
+                }
+                catch (FaultException<InternalError> err)
+                {
+                    MessageBox.Show(err.Detail.ToString());
+                }
+            }
         }
     }
 }
