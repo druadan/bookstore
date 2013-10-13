@@ -1,0 +1,24 @@
+﻿<Window x:Class="Client.BookDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BookDetailsWindow" Height="412" Width="526">
+    <Grid Height="346">
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Tytuł" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,41,0,0" Name="textBlock2" Text="Autor" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,70,0,0" Name="textBlock3" Text="Kategoria" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,99,0,0" Name="textBlock4" Text="Cena" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,12,0,0" Name="titleTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,41,0,0" Name="authorTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,70,0,0" Name="categoryTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,99,0,0" Name="priceTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,139,0,0" Name="textBlock5" Text="Komentarze" VerticalAlignment="Top" FontSize="15" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,168,0,0" Name="textBlock6" Text="Autor" VerticalAlignment="Top" />
+        <TextBlock Height="49" HorizontalAlignment="Left" Margin="12,226,0,0" Name="reviewContentTextBlock"  TextWrapping="Wrap" Text="fsdjkfsdjkfhsdjfhsjkdhfsdfsjfjsdfsdhfjsdfjsdhfjsdfhsdjfhsdfjsdhfs sdfsdjh ff sdhfsdjhf jsdhfjksdfj hsdfh sdjhf sjdf sdhfj sdhfj sdjfhjsd hfjsdhf jsdhfj hsdjf hsdfj hsdfj hsdfj hsdjfh sdjfh sdjfh sjdfh sdjhf sdjf jsd" VerticalAlignment="Top" MaxWidth="300" Width="300" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,293,0,0" Name="textBlock9" Text="Ocena" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,197,0,0" Name="reviewTitleTextBlock" Text="TextBlock" VerticalAlignment="Top" FontWeight="Bold" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,168,0,0" Name="reviewAuthorTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="73,293,0,0" Name="scoreTextBlock" Text="TextBlock" VerticalAlignment="Top" />
+        <Button Content="Poprzedni komentarz" Height="23" HorizontalAlignment="Left" Margin="12,323,0,0" Name="button1" VerticalAlignment="Top" Width="118" />
+        <Button Content="Następny komentarz" Height="23" HorizontalAlignment="Left" Margin="241,323,0,0" Name="button2" VerticalAlignment="Top" Width="117" />
+    </Grid>
+</Window>

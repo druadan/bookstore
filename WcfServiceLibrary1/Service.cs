@@ -37,9 +37,12 @@ namespace Bookstore_Service
         [OperationContract]
         int Logout(string login, string sessionToken);
 
-        
         [OperationContract]
-        Book[] Search(string title, string author, string category, string tag, int allOrAny);
+        Book[] GetBooks(string title, string author, string category, string tag, int allOrAny);
+
+        [OperationContract]
+        [FaultContract(typeof(InternalError))]
+        Review[] GetReviews(int book_id);
     }
 
 
@@ -116,10 +119,41 @@ namespace Bookstore_Service
             return 1;
         }
 
-        public Book[] Search(string title, string author, string category, string tag, int allOrAny)
+        public Book[] GetBooks(string title, string author, string category, string tag, int allOrAny)
         {
             return Book.getBooks(title, author, category, tag, allOrAny);
             
+        }
+
+        public Review[] GetReviews(int book_id)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
+                con.Open();
+                
+                SqlCommand cmd = new SqlCommand("SELECT r.* FROM bookstore.dbo.Review R JOIN bookstore.dbo.Book B ON R.book_id = B.id WHERE book_id = @bookID ; ", con);
+                cmd.Parameters.AddWithValue("@bookID", book_id);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+                
+                List<Review> reviewList = new List<Review>();
+
+                while (rdr.Read())
+                {
+                    Review r = new Review(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3),  rdr.GetString(4), rdr.GetDouble(5));
+                    reviewList.Add(r);         
+                }
+                return reviewList.ToArray();
+            }
+            catch (Exception e)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Błąd podczas wyszukiwania komentarzy";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
+
         }
     }
 }

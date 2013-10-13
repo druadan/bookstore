@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Bookstore_Service;
 using System.Data.SqlClient;
-using System.Data;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
+
 namespace Bookstore_Service.DBClasses
 {
+    [DataContract]
     public class Book
     {
+        public Book(int id, string title, string author, string category, double price)
+        {
+            this.id = id;
+            this.title = title;
+            this.author = author;
+            this.category = category;
+            this.price = price;
+        }
 
-
+        [DataMember]
         public int id { get; set; }
+        [DataMember]
         public String title { get; set; }
+        [DataMember]
         public String author { get; set; }
+        [DataMember]
         public String category { get; set; }
+        [DataMember]
         public double price { get; set; }
         
-        override public string ToString()
-        {
-            return id + " " + title;
-        }
 
         static public Book[] getBooks(string title, string author, string category, string tag, int allOrAny)
         {
@@ -68,14 +75,8 @@ namespace Bookstore_Service.DBClasses
 
                 while (rdr.Read())
                 {
-                    Book b = new Book();
-                    b.id = rdr.GetInt32(0);
-                    b.title = rdr.GetString(1);
-                    b.author = rdr.GetString(2);
-                    b.category = rdr.GetString(3);
-                    b.price = rdr.GetDouble(4);
-                    booksList.Add(b);
-                    
+                    Book b = new Book(rdr.GetInt32(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetDouble(4));
+                    booksList.Add(b);         
                 }
                 return booksList.ToArray();
             }

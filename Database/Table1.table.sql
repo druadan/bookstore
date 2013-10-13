@@ -77,6 +77,7 @@ CREATE TABLE [Review]
 	book_id int NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(8000) NOT NULL,
+	score float NOT NULL,
 	foreign key ( customer_login ) references Client ([login]),
 	foreign key ( book_id ) references Book (id)
 )
@@ -141,11 +142,11 @@ VALUES
 
 
 
-INSERT into [Review] (customer_login, book_id, title, content)
+INSERT into [Review] (customer_login, book_id, title, content, score)
 VALUES 
-( 'pr', 2, 'no nie wiem', 'taka sobie, mogla by byc fajniejsza' ),
-( 'om', 1, 'super', 'polecam każdemu' ),
-( 'om', 2, 'troche nudna', 'ale da się przeczytac' )
+( 'pr', 2, 'no nie wiem', 'taka sobie, mogla by byc fajniejsza', 3.0),
+( 'om', 1, 'super', 'polecam każdemu', 4.5 ),
+( 'om', 2, 'troche nudna', 'ale da się przeczytac', 2.1 )
 ;
 
 INSERT into [Tag_association] (tag_id, book_id)
