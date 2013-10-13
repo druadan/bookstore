@@ -12,21 +12,24 @@ namespace Bookstore_Service.DBClasses
     class ClientS
     {
 
- /*       	[login] varchar(30) NOT NULL PRIMARY KEY, 
-	name varchar(30), 
-	surname varchar(50),
-	[address] varchar(100),
-	loyal_client int,
-	[password] varchar(8000) NOT NULL,
-        */
+        /*       	
+           age int not null,
+           education varchar(30) NOT NULL,
+           preferredCat varchar(30) not null,
+           preferredCat2 varchar(30) not null,
+               */
 
-        
+
         public String login;
         public String name;
         public String surname;
         public String address;
         public int loyal_client;
         public String password;
+        public int age;
+        public String education;
+        public String preferredCat;
+        public String preferredCat2;
 
         public ClientS(string login){
                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
@@ -48,6 +51,9 @@ namespace Bookstore_Service.DBClasses
                 {
                     throw new Exception("Couldn't find such user"); 
                 }
+
+                this.login = login;
+            this.name = 
         }
        
        

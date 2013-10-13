@@ -11,3 +11,4 @@ DROP TABLE [Book];
 DROP TABLE [Salesman];
 DROP TABLE [Tag];
 DROP TABLE [Category];
+DROP TABLE [Education];
