@@ -38,7 +38,7 @@ namespace Bookstore_Service
         int Logout(string login, string sessionToken);
 
         [OperationContract]
-        Book[] GetBooks(string title, string author, string category, string tag, int allOrAny);
+        Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, int allOrAny);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
@@ -52,6 +52,15 @@ namespace Bookstore_Service
 
         [OperationContract]
         int AddReview(Review r);
+
+        [OperationContract]
+        Tag[] GetTopTagsForBook(int book_id);
+
+        [OperationContract]
+        int AddTag(Tag t, int book_id);
+
+        [OperationContract]
+        Category[] GetCategories();
     }
 
 
@@ -93,7 +102,7 @@ namespace Bookstore_Service
                     return "";
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InternalError fault = new InternalError();
                 fault.Result = 1;
@@ -117,7 +126,7 @@ namespace Bookstore_Service
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InternalError fault = new InternalError();
                 fault.Result = 1;
@@ -128,9 +137,9 @@ namespace Bookstore_Service
             return 1;
         }
 
-        public Book[] GetBooks(string title, string author, string category, string tag, int allOrAny)
+        public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, int allOrAny)
         {
-            return Book.getBooks(title, author, category, tag, allOrAny);
+            return Book.getBooks(title, author, category, tag, minScore, maxScore, allOrAny);
             
         }
 
@@ -151,7 +160,12 @@ namespace Bookstore_Service
 
             try
             {
-                return String.Format("{0:0.##}", sum / reviews.Length); 
+                double res = sum / reviews.Length;
+                if (Double.NaN.Equals(res))
+                {
+                    res = 0.0;
+                }
+                return String.Format("{0:0.##}", res); 
 
             }
             catch (Exception)
@@ -172,6 +186,22 @@ namespace Bookstore_Service
             ReviewS rs = new ReviewS(r);
             rs.save();
             return 0;
+        }
+
+        public Tag[] GetTopTagsForBook(int book_id)
+        {
+            return Tag.getTagsForBook(book_id);
+        }
+
+        public int AddTag(Tag t, int book_id)
+        {
+            TagS ts = new TagS(t);
+            return ts.addToBook(book_id);  
+        }
+
+        public Category[] GetCategories()
+        {
+            return Category.getCategories();
         }
     }
 }

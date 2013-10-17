@@ -25,10 +25,14 @@ namespace Client
         List<Review> reviewsList;
         int reviewInd;
        
-        public BookDetailsWindow(Book b)
+        public BookDetailsWindow()
         {
             InitializeComponent();
-            book = b;
+        }
+
+        public void setBook(Book b)
+        {
+            this.book = b;
 
             titleTextBlock.Text = b.title;
             authorTextBlock.Text = b.author;
@@ -42,6 +46,7 @@ namespace Client
                     IBookstore proxy = factory.CreateChannel();
                     reviewsList = new List<Review>(proxy.GetReviews(b.id));
                     avgScoreTextBlock.Text = proxy.GetAverageScore(b.id);
+                    tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id));
                 }
                 catch (FaultException<InternalError> err)
                 {
@@ -49,25 +54,33 @@ namespace Client
                 }
             }
 
-            List<Double> scoresList = new List<double>(new double[]{1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0});
+            List<Double> scoresList = new List<double>(new double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 });
             newReviewScoreCB.ItemsSource = scoresList;
 
             reviewInd = 0;
             refreshReviewView();
-
         }
 
         private void refreshReviewView()
         {
-            Review r = reviewsList[reviewInd];
+            if (reviewsList.Count > 0)
+            {
+                Review r = reviewsList[reviewInd];
 
-            reviewAuthorTextBlock.Text = r.customer_login;
-            reviewTitleTextBlock.Text = r.title;
-            reviewContentTextBlock.Text = r.content;
-            scoreTextBlock.Text = r.score.ToString();
+                reviewAuthorBtn.Content = r.customer_login;
+                reviewTitleTextBlock.Text = r.title;
+                reviewContentTextBlock.Text = r.content;
+                scoreTextBlock.Text = r.score.ToString();
 
-            prevReviewButton.IsEnabled = reviewInd > 0;
-            nextReviewButton.IsEnabled = reviewsList.Count - 1 > reviewInd;
+                prevReviewButton.IsEnabled = reviewInd > 0;
+                nextReviewButton.IsEnabled = reviewsList.Count - 1 > reviewInd;
+            }
+            else
+            {
+                reviewAuthorBtn.Content = reviewTitleTextBlock.Text = reviewContentTextBlock.Text = scoreTextBlock.Text = "";
+                prevReviewButton.IsEnabled = nextReviewButton.IsEnabled = reviewAuthorBtn.IsEnabled = false ;
+               
+            }
         }
 
         private void prevReviewButton_Click(object sender, RoutedEventArgs e)
@@ -82,46 +95,95 @@ namespace Client
             refreshReviewView();
         }
 
-        private void reviewAuthorTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Window nextWindow = new OtherUserDetailsWindow(reviewAuthorTextBlock.Text);
-            App.Current.MainWindow = nextWindow;
-            this.Close();
-            nextWindow.Show();
-        }
 
         private void sendReviewBtn_Click(object sender, RoutedEventArgs e)
         {
             using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
             {
-                try
-                {
-                    IBookstore proxy = factory.CreateChannel();
+                if(newReviewContentTB.Text.Equals("") || newReviewTitleTB.Text.Equals("") || newReviewScoreCB.Text.Equals("")){
+                    MessageBox.Show("Nie wypełniłeś wszystkich potrzebnych pól do wystawienia komentarza");
+                }else{
 
-                    Review r = new Review();
-                    r.content = newReviewContentTB.Text;
-                    r.title = newReviewTitleTB.Text;
-                    r.score = Double.Parse(newReviewScoreCB.Text);
-                    // r.customer_login = App.login;
-                    r.customer_login = "pr";
-                    r.book_id = book.id;
+                    try
+                    {
+                        IBookstore proxy = factory.CreateChannel();
 
-                    proxy.AddReview(r);
-                    reviewsList = new List<Review>(proxy.GetReviews(book.id));
-                    avgScoreTextBlock.Text = proxy.GetAverageScore(book.id);
-                    reviewInd = 0;
-                    refreshReviewView();
+                        Review r = new Review();
+                        r.content = newReviewContentTB.Text;
+                        r.title = newReviewTitleTB.Text;
+                        r.score = Double.Parse(newReviewScoreCB.Text);
+                        // r.customer_login = App.login;
+                        r.customer_login = "pr";
+                        r.book_id = book.id;
+
+                        proxy.AddReview(r);
+                        reviewsList = new List<Review>(proxy.GetReviews(book.id));
+                        avgScoreTextBlock.Text = proxy.GetAverageScore(book.id);
+                        reviewInd = 0;
+                        refreshReviewView();
 
 
-                    newReviewContentTB.Text = "";
-                    newReviewTitleTB.Text = "";
-                    newReviewScoreCB.Text = null;
-                }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
+                        newReviewContentTB.Text = "";
+                        newReviewTitleTB.Text = "";
+                        newReviewScoreCB.Text = null;
+                    }
+                    catch (FaultException<InternalError> err)
+                    {
+                        MessageBox.Show(err.Detail.ToString());
+                    }
                 }
             }
+        }
+
+        private void reviewAuthorBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.changeWindow(this, App.otherUserDetailsWindow);
+            App.otherUserDetailsWindow.setUserLogin((String)reviewAuthorBtn.Content);
+        }
+
+        private void addTagBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (addTagTB.Text.Equals(""))
+            {
+                MessageBox.Show("Tag musi mieć treść!");
+            }
+            else
+            {
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+                {
+                    try
+                    {
+                        IBookstore proxy = factory.CreateChannel();
+
+                        Tag t = new Tag();
+                        t.tag_id = addTagTB.Text;
+
+
+                        proxy.AddTag(t, book.id);
+                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id));
+
+
+                        addTagTB.Text = "";
+                    }
+                    catch (FaultException<InternalError> err)
+                    {
+                        MessageBox.Show(err.Detail.ToString());
+                    }
+                }
+            }
+        }
+
+        private void tagsLB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tagsLB.SelectedItem != null)
+            {
+                addTagTB.Text = tagsLB.SelectedItem.ToString();
+            }
+        }
+
+        private void prevWindowBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.changeWindow(this, App.prevWindow);
         }
     }
 }

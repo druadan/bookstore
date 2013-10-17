@@ -30,10 +30,7 @@ namespace Client
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            Window nextWindow = new SearchWindow();
-            App.Current.MainWindow = nextWindow;
-            this.Close();
-            nextWindow.Show();
+            App.changeWindow(this, App.searchWindow);
         }
 
         private void logoutButtion_Click(object sender, RoutedEventArgs e)
@@ -55,10 +52,8 @@ namespace Client
                         App.sessionToken = "";
                         App.login = "";
 
-                        Window nextWindow = new LogonWindow();
-                        App.Current.MainWindow = nextWindow;
-                        this.Close();
-                        nextWindow.Show();
+                        App.changeWindow(this, App.logonWindow);
+
                     }
 
                 }

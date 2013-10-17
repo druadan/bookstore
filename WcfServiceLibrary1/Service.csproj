@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="DBClasses\Client.cs" />
     <Compile Include="DBClasses\Book.cs" />
+    <Compile Include="DBClasses\Category.cs" />
+    <Compile Include="DBClasses\Tag.cs" />
     <Compile Include="DBClasses\Review.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

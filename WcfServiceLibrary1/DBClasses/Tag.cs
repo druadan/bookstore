@@ -1,0 +1,115 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+
+namespace Bookstore_Service.DBClasses
+{
+    [DataContract]
+    public class Tag
+    {
+        [DataMember]
+        public String tag_id { get; set; }
+
+        public Tag(){
+        }
+
+        public Tag(string id){
+            tag_id = id;
+        }
+
+        public Tag(Tag t)
+        {
+            tag_id = t.tag_id;
+        }
+
+        public override String ToString(){
+            return tag_id;
+        }
+
+        public static Tag[] getTagsForBook(int book_id)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(
+                    "SELECT TOP 5 T.tag_id, COUNT(*)" +
+                    "FROM Bookstore.dbo.Tag T JOIN Bookstore.dbo.Tag_association TA on t.tag_id = TA.tag_id " +
+                    "WHERE TA.book_id = @bookID " +
+                    "GROUP BY T.tag_id " +
+                    "ORDER BY 2 DESC ;"
+                    , con);
+
+                cmd.Parameters.AddWithValue("@bookID", book_id);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                List<Tag> tagsList = new List<Tag>();
+
+                while (rdr.Read())
+                {
+                    Tag t = new Tag(rdr.GetString(0));
+                    tagsList.Add(t);
+                }
+                return tagsList.ToArray();
+
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Błąd podczas pobierania tagów";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
+        }
+       
+    }
+
+    public class TagS : Tag
+    {
+
+        public TagS()
+        {
+        }
+
+        public TagS(Tag t)
+            : base(t)
+        {
+        }
+
+        public int addToBook(int book_id)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString + " Asynchronous Processing=true;" + "MultipleActiveResultSets=True;");
+                con.Open();
+
+                String insert1 = "INSERT INTO bookstore.dbo.Tag (tag_id) VALUES (@tagID );";
+                String insert2 = "INSERT INTO bookstore.dbo.Tag_association (tag_id, book_id) VALUES (@tagID, @bookID );";
+
+                SqlCommand cmd1 = new SqlCommand(insert1, con);
+                SqlCommand cmd2 = new SqlCommand(insert2, con);
+
+                cmd1.Parameters.AddWithValue("@tagID", tag_id);
+                cmd2.Parameters.AddWithValue("@tagID", tag_id);
+                cmd2.Parameters.AddWithValue("@bookID", book_id);
+
+                cmd1.BeginExecuteNonQuery();
+                cmd2.BeginExecuteNonQuery();
+                return 0;
+
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Błąd podczas dodawania tagu";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
+        }
+    }
+
+}

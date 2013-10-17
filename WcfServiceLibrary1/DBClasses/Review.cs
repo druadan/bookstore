@@ -66,7 +66,7 @@ namespace Bookstore_Service.DBClasses
                 }
                 return reviewList.ToArray();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InternalError fault = new InternalError();
                 fault.Result = 1;
@@ -128,7 +128,7 @@ namespace Bookstore_Service.DBClasses
                 cmd.BeginExecuteNonQuery();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 InternalError fault = new InternalError();
                 fault.Result = 1;

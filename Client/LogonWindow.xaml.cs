@@ -33,10 +33,7 @@ namespace Client
                         App.sessionToken = obtaintedToken;
                         App.login = loginTextBox.Text;
 
-                        Window nextWindow = new MainWindow();
-                        App.Current.MainWindow = nextWindow;
-                        this.Close();
-                        nextWindow.Show();
+                        App.changeWindow(this, App.mainWindow);
                     }
 
                 }

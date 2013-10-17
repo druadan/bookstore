@@ -11,10 +11,15 @@ namespace Client
     public partial class OtherUserDetailsWindow : Window
     {
 
-       
-        public OtherUserDetailsWindow(string userLogin)
+        string userLogin;
+        public OtherUserDetailsWindow()
         {
             InitializeComponent();
+        }
+
+        public void setUserLogin(string userLogin)
+        {
+            this.userLogin = userLogin;
 
             using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
             {
@@ -36,6 +41,12 @@ namespace Client
                     MessageBox.Show(err.Detail.ToString());
                 }
             }
+
+        }
+
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.changeWindow(this, App.prevWindow);
         }
     }
 }

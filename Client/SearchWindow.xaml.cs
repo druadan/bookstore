@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Text.RegularExpressions;
 
 namespace Client
 {
@@ -18,7 +20,22 @@ namespace Client
         public SearchWindow()
         {
             InitializeComponent();
-      
+            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            {
+
+                try
+                {
+                    IBookstore proxy = factory.CreateChannel();
+                    List<Category> catList = new List<Category>(proxy.GetCategories());
+                    catList.Add(new Category(""));
+                    categoryCB.ItemsSource = catList;
+                }
+                catch (FaultException<InternalError> err)
+                {
+                    MessageBox.Show(err.Detail.ToString());
+                }
+
+            }
         }
 
         static Book[] booksList;
@@ -39,7 +56,10 @@ namespace Client
                         allOrAny = false;
                     }
 
-                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryTextBox.Text, tagTextBox.Text, (bool)allOrAny ? 0 : 1 );
+                    double minScore = minScoreTB.Text.Equals("") ? double.NaN : double.Parse(minScoreTB.Text);
+                    double maxScore = maxScoreTB.Text.Equals("") ? double.NaN : double.Parse(maxScoreTB.Text);
+
+                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryCB.Text, tagTextBox.Text, minScore, maxScore, (bool)allOrAny ? 0 : 1 );
 
                     booksDataGrid.ItemsSource = new List<Book>(booksList);
                    
@@ -61,14 +81,18 @@ namespace Client
         private void booksDatagrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Book b = (Book)booksDataGrid.SelectedItem;
-
-            Window nextWindow = new BookDetailsWindow(b);
-            App.Current.MainWindow = nextWindow;
-            this.Close();
-            nextWindow.Show();
+            App.changeWindow(this, App.bookDetailsWindow);
+            App.bookDetailsWindow.setBook(b);
         }
 
 
+
+      
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[0-9]*[,.]?[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
+        }
 
     }
 }
