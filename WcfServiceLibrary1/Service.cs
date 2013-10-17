@@ -45,18 +45,19 @@ namespace Bookstore_Service
         Review[] GetReviews(int book_id);
 
         [OperationContract]
-        double GetAverageScore(int book_id);
+        String GetAverageScore(int book_id);
 
         [OperationContract]
         OtherClient GetOtherClient(string login);
 
-
+        [OperationContract]
+        int AddReview(Review r);
     }
 
 
     class Bookstore : IBookstore
     {
-        static public String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm";
+        static public String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm;";
         static Dictionary<String, List<String>> loggedUsers = new Dictionary<string, List<string>>();
 
         public string Login(string login, string password)
@@ -139,7 +140,7 @@ namespace Bookstore_Service
 
         }
 
-        public double GetAverageScore(int book_id)
+        public String GetAverageScore(int book_id)
         {
             Review[] reviews = Review.getReviews(book_id);
             double sum = 0.0;
@@ -150,12 +151,12 @@ namespace Bookstore_Service
 
             try
             {
-                return sum / reviews.Length;
+                return String.Format("{0:0.##}", sum / reviews.Length); 
 
             }
             catch (Exception)
             {
-                return 0.0;
+                return String.Format("{0:0.##}", 0.0); 
             }
 
         }
@@ -164,6 +165,13 @@ namespace Bookstore_Service
         {
             ClientS cs = new ClientS(login);
             return new OtherClient(cs.login, cs.name,cs.age,cs.education,cs.preferredCat,cs.preferredCat2);
+        }
+
+        public int AddReview(Review r)
+        {
+            ReviewS rs = new ReviewS(r);
+            rs.save();
+            return 0;
         }
     }
 }

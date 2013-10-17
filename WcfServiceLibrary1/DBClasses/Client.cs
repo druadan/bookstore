@@ -6,9 +6,6 @@ using Bookstore_Service;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 

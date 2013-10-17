@@ -5,8 +5,6 @@ using Bookstore_Service;
 using Bookstore_Service.DBClasses;
 using System.Reflection;
 using System.Data.SqlClient;
-using System.Data;
-using System.Data;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
