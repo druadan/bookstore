@@ -29,6 +29,7 @@ namespace Client
             InitializeComponent();
         }
 
+
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
             App.nextWindow(this, App.searchWindow);
@@ -36,10 +37,9 @@ namespace Client
 
         private void logoutButtion_Click(object sender, RoutedEventArgs e)
         {
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            try
             {
-                
-                try
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                 {
                     IBookstore proxy = factory.CreateChannel();
                     int result = proxy.Logout(App.login, App.sessionToken);
@@ -54,15 +54,14 @@ namespace Client
                         App.login = "";
 
                         App.nextWindow(this, App.logonWindow);
-
                     }
-
-                }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
                 }
 
+
+             }
+            catch (FaultException<BookstoreError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
             }
         }
 

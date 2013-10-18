@@ -32,6 +32,7 @@ namespace Client
             InitializeComponent();
         }
 
+
         public void setBook(Book b)
         {
             this.book = b;
@@ -41,20 +42,22 @@ namespace Client
             categoryTextBlock.Text = b.category;
             priceTextBlock.Text = b.price.ToString();
 
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
-            {
-                try
+            try
+             {
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                 {
-                    IBookstore proxy = factory.CreateChannel();
-                    reviewsList = new List<Review>(proxy.GetReviews(b.id, App.sessionToken));
-                    avgScoreTextBlock.Text = proxy.GetAverageScore(b.id, App.sessionToken);
-                    tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id, App.sessionToken));
+               
+                        IBookstore proxy = factory.CreateChannel();
+                        reviewsList = new List<Review>(proxy.GetReviews(b.id, App.login, App.sessionToken));
+                        avgScoreTextBlock.Text = proxy.GetAverageScore(b.id, App.login, App.sessionToken);
+                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id, App.login, App.sessionToken));
+               
                 }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
-                }
-            }
+             }
+             catch (FaultException<BookstoreError> err)
+             {
+                 MessageBox.Show(err.Detail.ToString());
+             }
 
             List<Double> scoresList = new List<double>(new double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 });
             newReviewScoreCB.ItemsSource = scoresList;
@@ -101,14 +104,18 @@ namespace Client
 
         private void sendReviewBtn_Click(object sender, RoutedEventArgs e)
         {
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            try
             {
-                if(newReviewContentTB.Text.Equals("") || newReviewTitleTB.Text.Equals("") || newReviewScoreCB.Text.Equals("")){
-                    MessageBox.Show("Nie wypełniłeś wszystkich potrzebnych pól do wystawienia komentarza");
-                }else{
-
-                    try
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+                {
+                    if (newReviewContentTB.Text.Equals("") || newReviewTitleTB.Text.Equals("") || newReviewScoreCB.Text.Equals(""))
                     {
+                        MessageBox.Show("Nie wypełniłeś wszystkich potrzebnych pól do wystawienia komentarza");
+                    }
+                    else
+                    {
+
+
                         IBookstore proxy = factory.CreateChannel();
 
                         Review r = new Review();
@@ -119,9 +126,9 @@ namespace Client
                         r.customer_login = "pr";
                         r.book_id = book.id;
 
-                        proxy.AddReview(r, App.sessionToken);
-                        reviewsList = new List<Review>(proxy.GetReviews(book.id, App.sessionToken));
-                        avgScoreTextBlock.Text = proxy.GetAverageScore(book.id, App.sessionToken);
+                        proxy.AddReview(r, App.login, App.sessionToken);
+                        reviewsList = new List<Review>(proxy.GetReviews(book.id, App.login, App.sessionToken));
+                        avgScoreTextBlock.Text = proxy.GetAverageScore(book.id, App.login, App.sessionToken);
                         reviewInd = 0;
                         refreshReviewView();
 
@@ -130,13 +137,17 @@ namespace Client
                         newReviewTitleTB.Text = "";
                         newReviewScoreCB.Text = null;
                     }
-                    catch (FaultException<InternalError> err)
-                    {
-                        MessageBox.Show(err.Detail.ToString());
-                    }
                 }
             }
+            catch (FaultException<BookstoreError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
+            }
         }
+            
+
+         
+        
 
         private void reviewAuthorBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -152,27 +163,29 @@ namespace Client
             }
             else
             {
-                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
-                {
-                    try
+                 try
+                 {
+                    using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                     {
+                   
                         IBookstore proxy = factory.CreateChannel();
 
                         Tag t = new Tag();
                         t.tag_id = addTagTB.Text;
 
 
-                        proxy.AddTag(t, book.id, App.sessionToken);
-                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id, App.sessionToken));
+                        proxy.AddTag(t, book.id, App.login, App.sessionToken);
+                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id, App.login, App.sessionToken));
 
 
                         addTagTB.Text = "";
+                   
                     }
-                    catch (FaultException<InternalError> err)
-                    {
-                        MessageBox.Show(err.Detail.ToString());
-                    }
-                }
+                 }
+                 catch (FaultException<BookstoreError> err)
+                 {
+                     MessageBox.Show(err.Detail.ToString());
+                 }
             }
         }
 

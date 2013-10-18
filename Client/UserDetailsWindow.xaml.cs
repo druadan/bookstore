@@ -23,5 +23,7 @@ namespace Client
         {
             InitializeComponent();
         }
+
+ 
     }
 }

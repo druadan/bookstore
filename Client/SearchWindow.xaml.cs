@@ -18,34 +18,41 @@ namespace Client
     public partial class SearchWindow : Window
     {
 
+        List<Category> catList = null;
+        List<Education> eduList = null;
 
         public SearchWindow()
         {
             InitializeComponent();
-            List<Category> catList;
-            List<Education> eduList;
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
-            {
+        }
 
+        // need to call it later, because 
+        public void init(){
+            if (catList == null || eduList == null)
+            {
                 try
                 {
-                    IBookstore proxy = factory.CreateChannel();
-                    catList = new List<Category>();
-                    catList.Add(new Category(""));
-                    catList.AddRange(proxy.GetCategories(App.sessionToken));
+                    using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+                    {
 
-                    eduList = new List<Education>();
-                    eduList.Add(new Education(""));
-                    eduList.AddRange(proxy.GetEducationDegrees(App.sessionToken));
+                        IBookstore proxy = factory.CreateChannel();
+                        catList = new List<Category>();
+                        catList.Add(new Category(""));
+                        catList.AddRange(proxy.GetCategories(App.login, App.sessionToken));
 
-                    categoryCB.ItemsSource = catList;
-                    reviewerEducationCB.ItemsSource = eduList;
+                        eduList = new List<Education>();
+                        eduList.Add(new Education(""));
+                        eduList.AddRange(proxy.GetEducationDegrees(App.login, App.sessionToken));
+
+                        categoryCB.ItemsSource = catList;
+                        reviewerEducationCB.ItemsSource = eduList;
+                    }
+
                 }
-                catch (FaultException<InternalError> err)
+                catch (FaultException<BookstoreError> err)
                 {
                     MessageBox.Show(err.Detail.ToString());
                 }
-
             }
         }
 
@@ -53,10 +60,9 @@ namespace Client
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            try
             {
-               
-                try
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                 {
 
                     IBookstore proxy = factory.CreateChannel();
@@ -73,17 +79,17 @@ namespace Client
                     double minAge = reviewerAgeMinTB.Text.Equals("") ? double.NaN : double.Parse(reviewerAgeMinTB.Text);
                     double maxAge = reviewerAgeMaxTB.Text.Equals("") ? double.NaN : double.Parse(reviewerAgeMaxTB.Text);
 
-                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryCB.Text, tagTextBox.Text, minScore, maxScore, minAge, maxAge, reviewerEducationCB.Text, (bool)allOrAny ? 0 : 1, App.sessionToken);
+                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryCB.Text, tagTextBox.Text, minScore, maxScore, minAge, maxAge, reviewerEducationCB.Text, (bool)allOrAny ? 0 : 1, App.login, App.sessionToken);
 
                     booksDataGrid.ItemsSource = new List<Book>(booksList);
-                   
-                    
-                }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
+
                 }
 
+
+            }
+            catch (FaultException<BookstoreError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
             }
         }
 

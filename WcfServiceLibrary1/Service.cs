@@ -58,39 +58,39 @@ namespace Bookstore_Service
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string sessionToken);
+        Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Review[] GetReviews(int book_id, string sessionToken);
+        Review[] GetReviews(int book_id, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        String GetAverageScore(int book_id, string sessionToken);
+        String GetAverageScore(int book_id, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        OtherClient GetOtherClient(string login, string sessionToken);
+        OtherClient GetOtherClient(string otherUserlogin, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        void AddReview(Review r, string sessionToken);
+        void AddReview(Review r, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Tag[] GetTopTagsForBook(int book_id, string sessionToken);
+        Tag[] GetTopTagsForBook(int book_id, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        int AddTag(Tag t, int book_id, string sessionToken);
+        int AddTag(Tag t, int book_id, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Category[] GetCategories(string sessionToken);
+        Category[] GetCategories(string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Education[] GetEducationDegrees(string sessionToken);
+        Education[] GetEducationDegrees(string login, string sessionToken);
     }
 
 
@@ -177,19 +177,19 @@ namespace Bookstore_Service
             return 1;
         }
 
-        public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string sessionToken)
+        public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string login, string sessionToken)
         {
             return Book.getBooks(title, author, category, tag, minScore, maxScore, minAge, maxAge, education, allOrAny);
             
         }
 
-        public Review[] GetReviews(int book_id, string sessionToken)
+        public Review[] GetReviews(int book_id, string login, string sessionToken)
         {
             return Review.getReviews(book_id);
 
         }
 
-        public String GetAverageScore(int book_id, string sessionToken)
+        public String GetAverageScore(int book_id, string login, string sessionToken)
         {
             try
             {
@@ -219,11 +219,11 @@ namespace Bookstore_Service
 
         }
 
-        public OtherClient GetOtherClient(string login, string sessionToken)
+        public OtherClient GetOtherClient(string otherUserlogin, string login, string sessionToken)
         {
             try
             {
-                ClientS cs = new ClientS(login);
+                ClientS cs = new ClientS(otherUserlogin);
                 return new OtherClient(cs.login, cs.name,cs.age,cs.education,cs.preferredCat,cs.preferredCat2);
             }
             catch (Exception)
@@ -235,7 +235,7 @@ namespace Bookstore_Service
             }
         }
 
-        public void AddReview(Review r, string sessionToken)
+        public void AddReview(Review r, string login, string sessionToken)
         {
             try
             {
@@ -251,7 +251,7 @@ namespace Bookstore_Service
             }
         }
 
-        public Tag[] GetTopTagsForBook(int book_id, string sessionToken)
+        public Tag[] GetTopTagsForBook(int book_id, string login, string sessionToken)
         {
             try
             {
@@ -266,7 +266,7 @@ namespace Bookstore_Service
             }
         }
 
-        public int AddTag(Tag t, int book_id, string sessionToken)
+        public int AddTag(Tag t, int book_id, string login, string sessionToken)
         {
             try
             {
@@ -282,20 +282,22 @@ namespace Bookstore_Service
             }
         }
 
-        public Category[] GetCategories(string sessionToken)
+        public Category[] GetCategories(string login, string sessionToken)
         {
+            validSessionToken(login, sessionToken);
             return Category.getCategories();
         }
 
-        public Education[] GetEducationDegrees(string sessionToken)
+        public Education[] GetEducationDegrees(string login, string sessionToken)
         {
+            validSessionToken(login, sessionToken);
             return Education.getEducationDegrees();
         }
 
 
         bool validSessionToken(string login, string sessionToken)
         {
-            if (loggedUsers[login].Contains(sessionToken))
+            if (loggedUsers.ContainsKey(login) && loggedUsers[login] != null && loggedUsers[login].Contains(sessionToken))
             {
                 return true;
             }

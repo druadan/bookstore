@@ -66,13 +66,11 @@ CREATE TABLE [Client]
 
 INSERT into Client
 VALUES 
---( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
---( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
---( 'pr','Piotr','Reszke','Gdańsk', 0, 'pr', 34, 'Podstawowe','Dramat','Przygodowa'),
-( 'om','Olga', 'Kowalska','Wrocław', 1, HASHBYTES('SHA1','om'), 12, 'Wyższe','Kucharska','Fantasy')
---( 'dk','Dawid', 'Kotłowski','Poznań', 0, 'dk',62, 'Średnie','Przygodowa','Biografia'),
---( 'ws','Wojtek', 'Wszelki','Warszawa', 0, 'ws',25, 'Średnie','Horror','Biografia'),
---( 'fm','Filip', 'Macek','Rzeszów', 0, 'fm',43, 'Podstawowe','Horror','Biografia')
+( 'pr','Piotr','Reszke','Gdańsk', 0, HASHBYTES('SHA1','pr'), 34, 'Podstawowe','Dramat','Przygodowa'),
+( 'om','Olga', 'Kowalska','Wrocław', 1, HASHBYTES('SHA1','om'), 12, 'Wyższe','Kucharska','Fantasy'),
+( 'dk','Dawid', 'Kotłowski','Poznań', 0, HASHBYTES('SHA1','dk'),62, 'Średnie','Przygodowa','Biografia'),
+( 'ws','Wojtek', 'Wszelki','Warszawa', 0, HASHBYTES('SHA1','ws'),25, 'Średnie','Horror','Biografia'),
+( 'fm','Filip', 'Macek','Rzeszów', 0, HASHBYTES('SHA1','fm'),43, 'Podstawowe','Horror','Biografia')
 ;
 
 CREATE TABLE [Book]

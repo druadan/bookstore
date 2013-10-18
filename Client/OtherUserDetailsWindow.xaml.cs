@@ -18,29 +18,29 @@ namespace Client
             InitializeComponent();
         }
 
+
         public void setUserLogin(string userLogin)
         {
             this.userLogin = userLogin;
-
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            try
             {
-                try
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                 {
+
                     IBookstore proxy = factory.CreateChannel();
 
-                    OtherClient oc = proxy.GetOtherClient(userLogin, App.sessionToken);
+                    OtherClient oc = proxy.GetOtherClient(userLogin, App.login, App.sessionToken);
                     ageTB.Text = oc.age.ToString();
                     loginTB.Text = oc.login;
                     educationTB.Text = oc.education;
                     nameTB.Text = oc.name;
                     preferredTB.Text = oc.preferredCat + ", " + oc.preferredCat2;
+                 }
 
-
-                }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
-                }
+            }
+            catch (FaultException<BookstoreError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
             }
 
         }

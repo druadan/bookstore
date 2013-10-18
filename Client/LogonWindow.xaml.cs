@@ -10,8 +10,7 @@ namespace Client
     public partial class LogonWindow : Window
     {
 
-        
-
+       
         public LogonWindow()
         {
             InitializeComponent();
@@ -19,30 +18,36 @@ namespace Client
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
+            try
             {
-                string obtaintedToken = null;
-                try
+                using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
                 {
+                    string obtaintedToken = null;
+                
                     IBookstore proxy = factory.CreateChannel();
                     obtaintedToken = proxy.Login(loginTextBox.Text, passwordTextBox.Password);
 
                     App.sessionToken = obtaintedToken;
                     App.login = loginTextBox.Text;
 
+
+                    // here we initialize some components which valid connection to server
+                    App.searchWindow.init();
+                   
+                    
                     App.nextWindow(this, App.mainWindow);
                     passwordTextBox.Password = "";
                     
                 }
-                catch (FaultException<LoginError> err)
-                {
-                    MessageBox.Show(err.Detail.ToString());
-                }
-                catch (FaultException<InternalError> err)
-                {
-                    MessageBox.Show( err.Detail.ToString() );
-                }
 
+            }
+            catch (FaultException<LoginError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
+            }
+            catch (FaultException<BookstoreError> err)
+            {
+                MessageBox.Show(err.Detail.ToString());
             }
         }
     }

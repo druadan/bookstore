@@ -21,11 +21,11 @@ namespace Client
         public static OtherUserDetailsWindow otherUserDetailsWindow = new OtherUserDetailsWindow();
         public static SearchWindow searchWindow = new SearchWindow();
         public static UserDetailsWindow userDetailsWindow = new UserDetailsWindow();
+
         public static Dictionary<Window, Window> prevWindows = new Dictionary<Window, Window>();
 
         static App()
         {
-            
             prevWindows.Add(bookDetailsWindow, null);
             prevWindows.Add(logonWindow, null);
             prevWindows.Add(mainWindow, null);
