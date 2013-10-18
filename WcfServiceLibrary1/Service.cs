@@ -106,7 +106,7 @@ namespace Bookstore_Service
 
     public class Bookstore : IBookstore
     {
-        static public String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm;";
+        static public String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=admadmadm1!@;";
         static Dictionary<String, List<String>> loggedUsers = new Dictionary<string, List<string>>();
 
         public string Login(string login, string password)
