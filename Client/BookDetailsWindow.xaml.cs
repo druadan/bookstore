@@ -21,6 +21,8 @@ namespace Client
     /// </summary>
     public partial class BookDetailsWindow : Window
     {
+
+       
         Book book;
         List<Review> reviewsList;
         int reviewInd;
@@ -137,7 +139,7 @@ namespace Client
 
         private void reviewAuthorBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.changeWindow(this, App.otherUserDetailsWindow);
+            App.nextWindow(this, App.otherUserDetailsWindow);
             App.otherUserDetailsWindow.setUserLogin((String)reviewAuthorBtn.Content);
         }
 
@@ -183,7 +185,7 @@ namespace Client
 
         private void prevWindowBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.changeWindow(this, App.prevWindow);
+            App.prevWindow(this);
         }
     }
 }

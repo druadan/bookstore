@@ -23,6 +23,7 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace Client
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            App.changeWindow(this, App.searchWindow);
+            App.nextWindow(this, App.searchWindow);
         }
 
         private void logoutButtion_Click(object sender, RoutedEventArgs e)
@@ -52,7 +53,7 @@ namespace Client
                         App.sessionToken = "";
                         App.login = "";
 
-                        App.changeWindow(this, App.logonWindow);
+                        App.nextWindow(this, App.logonWindow);
 
                     }
 

@@ -18,6 +18,7 @@ namespace Client
     /// </summary>
     public partial class UserDetailsWindow : Window
     {
+
         public UserDetailsWindow()
         {
             InitializeComponent();

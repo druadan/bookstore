@@ -9,6 +9,9 @@ namespace Client
     /// </summary>
     public partial class LogonWindow : Window
     {
+
+        
+
         public LogonWindow()
         {
             InitializeComponent();
@@ -33,7 +36,7 @@ namespace Client
                         App.sessionToken = obtaintedToken;
                         App.login = loginTextBox.Text;
 
-                        App.changeWindow(this, App.mainWindow);
+                        App.nextWindow(this, App.mainWindow);
                     }
 
                 }

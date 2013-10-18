@@ -17,6 +17,8 @@ namespace Client
     /// </summary>
     public partial class SearchWindow : Window
     {
+
+
         public SearchWindow()
         {
             InitializeComponent();
@@ -81,7 +83,7 @@ namespace Client
         private void booksDatagrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Book b = (Book)booksDataGrid.SelectedItem;
-            App.changeWindow(this, App.bookDetailsWindow);
+            App.nextWindow(this, App.bookDetailsWindow);
             App.bookDetailsWindow.setBook(b);
         }
 

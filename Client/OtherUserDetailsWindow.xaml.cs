@@ -12,6 +12,7 @@ namespace Client
     {
 
         string userLogin;
+
         public OtherUserDetailsWindow()
         {
             InitializeComponent();
@@ -46,7 +47,7 @@ namespace Client
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            App.changeWindow(this, App.prevWindow);
+            App.prevWindow(this);
         }
     }
 }

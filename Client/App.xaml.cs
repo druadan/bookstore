@@ -21,15 +21,33 @@ namespace Client
         public static OtherUserDetailsWindow otherUserDetailsWindow = new OtherUserDetailsWindow();
         public static SearchWindow searchWindow = new SearchWindow();
         public static UserDetailsWindow userDetailsWindow = new UserDetailsWindow();
+        public static Dictionary<Window, Window> prevWindows = new Dictionary<Window, Window>();
 
-        public static Window prevWindow = null;
-
-        public static void changeWindow(Window currentWindow, Window nextWindow)
+        static App()
         {
-            currentWindow.Visibility = System.Windows.Visibility.Hidden;
-            prevWindow = currentWindow;
-            nextWindow.Visibility = System.Windows.Visibility.Visible;
+            
+            prevWindows.Add(bookDetailsWindow, null);
+            prevWindows.Add(logonWindow, null);
+            prevWindows.Add(mainWindow, null);
+            prevWindows.Add(otherUserDetailsWindow, null);
+            prevWindows.Add(searchWindow, null);
+            prevWindows.Add(userDetailsWindow, null);
 
         }
+
+        public static void nextWindow(Window current, Window next)
+        {
+            current.Visibility = System.Windows.Visibility.Hidden;
+            prevWindows[next] = current;
+            next.Visibility = System.Windows.Visibility.Visible;
+        }
+
+
+        public static void prevWindow(Window current)
+        {
+            current.Visibility = System.Windows.Visibility.Hidden;
+            prevWindows[current].Visibility = System.Windows.Visibility.Visible;
+        }
     }
+
 }
