@@ -26,7 +26,11 @@ namespace Bookstore_Service.DBClasses
         {
             return name;
         }
+    
+    }
 
+    public class CategoryS : Category
+    {
         public static Category[] getCategories()
         {
             try
@@ -61,7 +65,6 @@ namespace Bookstore_Service.DBClasses
                 throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
         }
-       
     }
 
   

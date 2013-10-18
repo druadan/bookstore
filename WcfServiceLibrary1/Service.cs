@@ -191,14 +191,14 @@ namespace Bookstore_Service
         public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string login, string sessionToken)
         {
             validateSessionToken(login, sessionToken);
-            return Book.getBooks(title, author, category, tag, minScore, maxScore, minAge, maxAge, education, allOrAny);
+            return BookS.getBooks(title, author, category, tag, minScore, maxScore, minAge, maxAge, education, allOrAny);
             
         }
 
         public Review[] GetReviews(int book_id, string login, string sessionToken)
         {
             validateSessionToken(login, sessionToken);
-            return Review.getReviews(book_id);
+            return ReviewS.getReviews(book_id);
 
         }
 
@@ -207,7 +207,7 @@ namespace Bookstore_Service
             validateSessionToken(login, sessionToken);
             try
             {
-                Review[] reviews = Review.getReviews(book_id);
+                Review[] reviews = ReviewS.getReviews(book_id);
                 double sum = 0.0;
                 foreach (Review r in reviews)
                 {
@@ -272,7 +272,7 @@ namespace Bookstore_Service
             validateSessionToken(login, sessionToken);
             try
             {
-                return Tag.getTagsForBook(book_id);
+                return TagS.getTagsForBook(book_id);
             }
             catch (Exception)
             {
@@ -303,13 +303,13 @@ namespace Bookstore_Service
         public Category[] GetCategories(string login, string sessionToken)
         {
             validateSessionToken(login, sessionToken);
-            return Category.getCategories();
+            return CategoryS.getCategories();
         }
 
         public Education[] GetEducationDegrees(string login, string sessionToken)
         {
             validateSessionToken(login, sessionToken);
-            return Education.getEducationDegrees();
+            return EducationS.getEducationDegrees();
         }
 
 

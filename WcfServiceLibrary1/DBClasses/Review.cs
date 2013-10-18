@@ -44,25 +44,34 @@ namespace Bookstore_Service.DBClasses
         public String content { get; set; }
         [DataMember]
         public double score { get; set; }
+  
+    }
+
+
+    public class ReviewS : Review
+    {
+        public ReviewS(Review r):base(r)
+        {
+        }
 
         static public Review[] getReviews(int book_id)
         {
-              try
+            try
             {
                 SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
                 con.Open();
-                
+
                 SqlCommand cmd = new SqlCommand("SELECT r.* FROM bookstore.dbo.Review R JOIN bookstore.dbo.Book B ON R.book_id = B.id WHERE book_id = @bookID ; ", con);
                 cmd.Parameters.AddWithValue("@bookID", book_id);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
-                
+
                 List<Review> reviewList = new List<Review>();
 
                 while (rdr.Read())
                 {
-                    Review r = new Review(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3),  rdr.GetString(4), rdr.GetDouble(5));
-                    reviewList.Add(r);         
+                    Review r = new Review(rdr.GetInt32(0), rdr.GetString(1), rdr.GetInt32(2), rdr.GetString(3), rdr.GetString(4), rdr.GetDouble(5));
+                    reviewList.Add(r);
                 }
                 return reviewList.ToArray();
             }
@@ -74,25 +83,6 @@ namespace Bookstore_Service.DBClasses
                 throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
         }
-
-      
-       
-    }
-
-
-    public class ReviewS : Review
-    {
-        public ReviewS(Review r):base(r)
-        {
-        }
-/* 
-    id int NOT NULL PRIMARY KEY IDENTITY(1,1), 
-    customer_login varchar(30) NOT NULL, 
-    book_id int NOT NULL,
-    title varchar(50) NOT NULL,
-    content varchar(8000) NOT NULL,
-    score float NOT NULL,
- */
 
         public void save()
         {

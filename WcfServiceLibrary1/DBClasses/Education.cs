@@ -27,7 +27,10 @@ namespace Bookstore_Service.DBClasses
         public override String ToString(){
             return name;
         }
+    }
 
+    public class EducationS : Education
+    {
         public static Education[] getEducationDegrees()
         {
             try
@@ -62,9 +65,6 @@ namespace Bookstore_Service.DBClasses
                 throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
         }
-       
     }
-
-  
 
 }

@@ -28,6 +28,22 @@ namespace Bookstore_Service.DBClasses
             return tag_id;
         }
 
+  
+       
+    }
+
+    public class TagS : Tag
+    {
+
+        public TagS()
+        {
+        }
+
+        public TagS(Tag t)
+            : base(t)
+        {
+        }
+
         public static Tag[] getTagsForBook(int book_id)
         {
             try
@@ -64,20 +80,6 @@ namespace Bookstore_Service.DBClasses
                 fault.ErrorMessage = "Błąd podczas pobierania tagów";
                 throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
-        }
-       
-    }
-
-    public class TagS : Tag
-    {
-
-        public TagS()
-        {
-        }
-
-        public TagS(Tag t)
-            : base(t)
-        {
         }
 
         public int addToBook(int book_id)

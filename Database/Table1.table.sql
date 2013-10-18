@@ -20,8 +20,6 @@ CREATE TABLE [Category]
 
 INSERT into Category
 VALUES 
---( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
---( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
 ( 'Kucharska'),
 ( 'Romans'),
 ( 'Horror'),

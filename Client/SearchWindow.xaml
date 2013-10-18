@@ -13,7 +13,7 @@
         <RadioButton Content="Wszystkie kryteria spełnione" Height="16" HorizontalAlignment="Left" Margin="12,245,0,0" Name="allRadioButton" VerticalAlignment="Top" IsChecked="True" />
         <RadioButton Content="Którekolwiek kryterium spełnione" Height="16" HorizontalAlignment="Left" Margin="12,267,0,0" Name="anyRadioButton" VerticalAlignment="Top" />
         <Button Content="Szukaj" Height="23" HorizontalAlignment="Left" Margin="228,413,0,0" Name="searchButton" VerticalAlignment="Top" Width="75" Click="searchButton_Click" />
-        <DataGrid  Height="402" HorizontalAlignment="Left" Margin="318,12,0,0" Name="booksDataGrid" VerticalAlignment="Top" Width="375" ColumnWidth="*"  MouseDoubleClick="booksDatagrid_MouseDoubleClick" ItemsSource="{Binding}" IsReadOnly="True" MinColumnWidth="20" />
+        <DataGrid  Height="461" HorizontalAlignment="Left" Margin="318,12,0,0" Name="booksDataGrid" VerticalAlignment="Top" Width="375" ColumnWidth="*"  MouseDoubleClick="booksDatagrid_MouseDoubleClick" ItemsSource="{Binding}" IsReadOnly="True" MinColumnWidth="20" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="14,155,0,0" Name="textBlock5" Text="Kategoria" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="216,213,0,0" Name="minScoreTB" VerticalAlignment="Top" Width="30" PreviewTextInput="NumberValidationTextBox" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,216,0,0" Name="textBlock6" Text="Średnia ocen " VerticalAlignment="Top" />
