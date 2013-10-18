@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Client.SearchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SearchWindow" Height="503" Width="735" ResizeMode="CanMinimize">
+        Title="SearchWindow" Height="542" Width="736" ResizeMode="CanMinimize">
     <Grid>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,29,0,0" Name="textBlock1" Text="Szukaj książki" VerticalAlignment="Top" FontSize="15" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="182,87,0,0" Name="titleTextBox" VerticalAlignment="Top" Width="120" />
@@ -29,5 +29,6 @@
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="14,372,0,0" Name="textBlock12" Text="Wykszatałcenie komentującego" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="15,308,0,0" Name="textBlock15" Text="Filtruj używając komentarzy" VerticalAlignment="Top" FontSize="15" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="185,372,0,0" Name="reviewerEducationCB" VerticalAlignment="Top" Width="120" />
+        <Button Content="Powrót" Height="23" HorizontalAlignment="Left" Margin="228,450,0,0" Name="backBtn" VerticalAlignment="Top" Width="77" Click="backBtn_Click" />
     </Grid>
 </Window>

@@ -115,6 +115,12 @@ namespace Client
         }
 
 
+        private void backBtn_Click(object sender, RoutedEventArgs e)
+        {
+            App.prevWindow(this);
+        }
+
+
 
     }
 }

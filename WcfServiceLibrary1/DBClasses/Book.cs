@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
-using System.Windows.Forms;
+using System.ServiceModel;
 
 namespace Bookstore_Service.DBClasses
 {
@@ -137,12 +137,15 @@ namespace Bookstore_Service.DBClasses
                 }
                 return booksList.ToArray();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.ToString());
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Błąd podczas pobierania listy książek";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
             }
 
-            return null;
+            
 
 
         }
