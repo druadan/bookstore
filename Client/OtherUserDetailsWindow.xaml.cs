@@ -28,7 +28,7 @@ namespace Client
                 {
                     IBookstore proxy = factory.CreateChannel();
 
-                    OtherClient oc = proxy.GetOtherClient(userLogin);
+                    OtherClient oc = proxy.GetOtherClient(userLogin, App.sessionToken);
                     ageTB.Text = oc.age.ToString();
                     loginTB.Text = oc.login;
                     educationTB.Text = oc.education;

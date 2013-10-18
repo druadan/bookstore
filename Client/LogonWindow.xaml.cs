@@ -27,18 +27,16 @@ namespace Client
                     IBookstore proxy = factory.CreateChannel();
                     obtaintedToken = proxy.Login(loginTextBox.Text, passwordTextBox.Password);
 
-                    if ("".Equals(obtaintedToken))
-                    {
-                        MessageBox.Show("Błędny login lub hasło");
-                    }
-                    else
-                    {
-                        App.sessionToken = obtaintedToken;
-                        App.login = loginTextBox.Text;
+                    App.sessionToken = obtaintedToken;
+                    App.login = loginTextBox.Text;
 
-                        App.nextWindow(this, App.mainWindow);
-                    }
-
+                    App.nextWindow(this, App.mainWindow);
+                    passwordTextBox.Password = "";
+                    
+                }
+                catch (FaultException<LoginError> err)
+                {
+                    MessageBox.Show(err.Detail.ToString());
                 }
                 catch (FaultException<InternalError> err)
                 {

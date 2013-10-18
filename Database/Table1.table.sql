@@ -25,7 +25,7 @@ VALUES
 ( 'Kucharska'),
 ( 'Romans'),
 ( 'Horror'),
-( 'Historyczna'),
+( 'Melodramat'),
 ( 'Biografia'),
 ( 'Science-fiction'),
 ( 'Fantasy'),
@@ -54,7 +54,7 @@ CREATE TABLE [Client]
 	surname varchar(50),
 	[address] varchar(100),
 	loyal_client int,
-	[password] varchar(8000) NOT NULL,
+	[password] varbinary(8000) NOT NULL,
 	age int not null,
 	education varchar(30) NOT NULL,
 	preferredCat varchar(30) not null,
@@ -68,9 +68,11 @@ INSERT into Client
 VALUES 
 --( 'Piotr','Reszke','Luzino', 0, HASHBYTES('SHA1','pr')),
 --( 'Olga','M','Luzino', 1, HASHBYTES('SHA1','om'))
-( 'pr','Piotr','Reszke','Luzino', 0, 'pr', 34, 'Wyższe','Dramat','Przygodowa'),
-( 'om','Olga', 'M','Luzino', 1, 'om', 12, 'Podstawowe','Dramat','Fantasy'),
-( 'dk','Dawid', 'K','Robakowo', 0, 'dk',25, 'Średnie','Horror','Biografia')
+--( 'pr','Piotr','Reszke','Gdańsk', 0, 'pr', 34, 'Podstawowe','Dramat','Przygodowa'),
+( 'om','Olga', 'Kowalska','Wrocław', 1, HASHBYTES('SHA1','om'), 12, 'Wyższe','Kucharska','Fantasy')
+--( 'dk','Dawid', 'Kotłowski','Poznań', 0, 'dk',62, 'Średnie','Przygodowa','Biografia'),
+--( 'ws','Wojtek', 'Wszelki','Warszawa', 0, 'ws',25, 'Średnie','Horror','Biografia'),
+--( 'fm','Filip', 'Macek','Rzeszów', 0, 'fm',43, 'Podstawowe','Horror','Biografia')
 ;
 
 CREATE TABLE [Book]
@@ -85,10 +87,16 @@ CREATE TABLE [Book]
 
 INSERT into Book(title, author, category, price)
 VALUES 
-( 'Szerlok', 'Doyle', 'Biografia',66),
-( 'Gotuj z Olgella', 'Olgella', 'Kucharska',1000),
-( 'Kot jest gupi', 'PR', 'Przygodowa', 34),
-( 'Robinson', 'xxx', 'Przygodowa', 88.1)
+( 'Sherlock Holmes', 'Arthur Conan Doyle', 'Przygodowa',66),
+( 'Inferno', 'Dan Brown', 'Przygodowa', 23),
+( 'Władca Pierścieni', 'John Ronald Reuel Tolkien', 'Fantasy', 34),
+( 'Ojciec Chrzestny', 'Mario Puzo', 'Dramat', 88),
+( 'Duma i uprzedzenie', 'Jane Austen', 'Melodramat', 83),
+( 'Kod Leonarda Da Vinci', 'Dan Brown', 'Przygodowa', 26),
+( 'Alicja w Krainie Czarów', 'Lewis Carroll', 'Fantasy', 44),
+( 'Hamlet', 'William Shakespeare', 'Dramat', 120),
+( 'Wielki Gatsby', 'William Shakespeare', 'Melodramat', 92),
+( 'Rok 1984', 'George Orwell', 'Science-fiction', 61)
 ;
 
 
@@ -113,11 +121,15 @@ CREATE TABLE [Tag]
 
 INSERT into Tag(tag_id)
 VALUES 
-( 'much_softness' ),
-( 'hungry' ),
-( 'wow' ),
-( 'adventure' ),
-( 'so_experience' )
+( 'omijać' ),
+( 'polecam' ),
+( 'tylkodladesperatów' ),
+( 'najwyższapółka' ),
+( 'ulubiona' ),
+( 'żałujęzakupu' ),
+( 'przeczytałemwjednąnoc' ),
+( 'pasjonująca' ),
+( 'klasykagatunku' )
 ;
 
 CREATE TABLE [Order]
@@ -169,14 +181,14 @@ CREATE TABLE [Review]
 
 INSERT into [Review] (customer_login, book_id, title, content, score)
 VALUES 
-( 'pr', 2, 'no nie wiem', 'taka sobie, mogla by byc fajniejsza', 3.0),
+( 'pr', 2, 'no nie wiem', 'mieszanie odczucia, mogla by być fajniejsza', 3.0),
 ( 'om', 1, 'super', 'polecam każdemu', 4.5 ),
-( 'om', 2, 'troche nudna', 'ale da się przeczytac', 2.0 )
+( 'om', 2, 'troche nudna', 'ale da się przeczytac', 3.0 ),
+( 'dk', 4, 'czytałem z wypiekami na twarzy', 'jedna z lepszych książek jakie czytałem', 4.5 ),
+( 'ws', 6, 'polecam', 'nie każdemu się spodoba, ale za tą cenę warto sprobówać', 3.5 ),
+( 'fm', 8, 'dlaczego', 'jest tak mało, tak świetnych książek' ,5.0 ),
+( 'dk', 8, 'porażka', 'porażka', 2.0 )
 ;
-
-UPDATE [Review] SET customer_login='pr', title='hm' where id=2;
-
-
 
 CREATE TABLE [Tag_association]
 (
@@ -189,12 +201,23 @@ CREATE TABLE [Tag_association]
 
 INSERT into [Tag_association] (tag_id, book_id)
 VALUES 
-( 'wow', 2),
-( 'wow', 1),
-( 'much_softness', 1),
-( 'so_experience', 3)
+( 'omijać', 2),
+( 'żałujęzakupu', 1),
+( 'pasjonująca', 1),
+( 'najwyższapółka', 2),
+( 'omijać', 9),
+( 'polecam', 8),
+( 'przeczytałemwjednąnoc', 7),
+( 'klasykagatunku', 3),
+( 'ulubiona', 3),
+( 'najwyższapółka', 4),
+( 'polecam', 8),
+( 'pasjonująca', 10),
+( 'tylkodladesperatów', 4),
+( 'pasjonująca', 3),
+( 'polecam', 8),
+( 'przeczytałemwjednąnoc', 2)
 ;
-
 
 
 DROP login adm ;

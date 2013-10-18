@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "WcfServiceLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{B60FE849-2F81-4C79-9B1C-AFDAAF5B7F47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hosting", "Hosting\Hosting.csproj", "{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,16 @@ Global
 		{B60FE849-2F81-4C79-9B1C-AFDAAF5B7F47}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B60FE849-2F81-4C79-9B1C-AFDAAF5B7F47}.Release|x86.ActiveCfg = Release|x86
 		{B60FE849-2F81-4C79-9B1C-AFDAAF5B7F47}.Release|x86.Build.0 = Release|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Debug|x86.ActiveCfg = Debug|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Debug|x86.Build.0 = Debug|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Release|Any CPU.ActiveCfg = Release|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Release|x86.ActiveCfg = Release|x86
+		{B4747DDC-3935-4587-A380-2F7DFD0D9D7D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

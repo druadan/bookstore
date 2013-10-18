@@ -14,7 +14,7 @@ using Bookstore_Service.DBClasses;
 namespace Bookstore_Service
 {
     [DataContract]
-    public class InternalError
+    public class BookstoreError
     {
         [DataMember]
         public int Result { get; set; }
@@ -23,64 +23,102 @@ namespace Bookstore_Service
 
         override public string ToString()
         {
-            return "Result: " + this.Result.ToString() + "\n\nError message: " + this.ErrorMessage.ToString();
+            return  "Error message: " + this.ErrorMessage.ToString();
         }
     }
+
+    [DataContract]
+    public class LoginError : BookstoreError
+    {
+    }
+
+    [DataContract]
+    public class InvalidSessionTokenError : BookstoreError
+    {
+    }
+
+    [DataContract]
+    public class InternalError: BookstoreError
+    {
+    }
+
+
 
     [ServiceContract]
     public interface IBookstore
     {
         [OperationContract]
         [FaultContract(typeof(InternalError))]
+        [FaultContract(typeof(LoginError))]
         string Login(string login, string password);
 
         [OperationContract]
+        [FaultContract(typeof(InternalError))]
         int Logout(string login, string sessionToken);
 
         [OperationContract]
-        Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, int allOrAny);
+        [FaultContract(typeof(InternalError))]
+        Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
-        Review[] GetReviews(int book_id);
+        Review[] GetReviews(int book_id, string sessionToken);
 
         [OperationContract]
-        String GetAverageScore(int book_id);
+        [FaultContract(typeof(InternalError))]
+        String GetAverageScore(int book_id, string sessionToken);
 
         [OperationContract]
-        OtherClient GetOtherClient(string login);
+        [FaultContract(typeof(InternalError))]
+        OtherClient GetOtherClient(string login, string sessionToken);
 
         [OperationContract]
-        int AddReview(Review r);
+        [FaultContract(typeof(InternalError))]
+        void AddReview(Review r, string sessionToken);
 
         [OperationContract]
-        Tag[] GetTopTagsForBook(int book_id);
+        [FaultContract(typeof(InternalError))]
+        Tag[] GetTopTagsForBook(int book_id, string sessionToken);
 
         [OperationContract]
-        int AddTag(Tag t, int book_id);
+        [FaultContract(typeof(InternalError))]
+        int AddTag(Tag t, int book_id, string sessionToken);
 
         [OperationContract]
-        Category[] GetCategories();
+        [FaultContract(typeof(InternalError))]
+        Category[] GetCategories(string sessionToken);
+
+        [OperationContract]
+        [FaultContract(typeof(InternalError))]
+        Education[] GetEducationDegrees(string sessionToken);
     }
 
 
-    class Bookstore : IBookstore
+    public class Bookstore : IBookstore
     {
         static public String sqlConnectionString = "Data Source=DRUADAN-DESKTOP\\SQLEXPRESS; User ID=adm; Password=adm;";
         static Dictionary<String, List<String>> loggedUsers = new Dictionary<string, List<string>>();
 
         public string Login(string login, string password)
         {
+            bool loginNotFound = false;
             try
             {
-
-                ClientS c = new ClientS(login);
-                if (c == null)
+                ClientS c = null;
+                try
                 {
-                    return "";
+                   c = new ClientS(login);
+                }
+                catch (Exception)
+                {
+                    loginNotFound = true;
                 }
 
-                if (c.password.Equals(password))
+                SHA1 sha1 = new SHA1CryptoServiceProvider();
+                byte[] hashedPasswd = sha1.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+
+                if (loginNotFound == false && c.password.SequenceEqual(hashedPasswd))
                 {
                     var s = new StringBuilder();
                     SHA1 hasher = SHA1.Create();
@@ -97,19 +135,21 @@ namespace Bookstore_Service
                     return s.ToString();
 
                 }
-                else
-                {
-                    return "";
-                }
+
             }
             catch (Exception)
             {
-                InternalError fault = new InternalError();
-                fault.Result = 1;
-                fault.ErrorMessage = "Logowanie nie powiodło się z powodu wewnętrznego błędu serwera";
-                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+                InternalError ie = new InternalError();
+                ie.Result = 1;
+                ie.ErrorMessage = "Logowanie nie powiodło się z powodu wewnętrznego błędu serwera";
+                throw new FaultException<InternalError>(ie, new FaultReason(ie.ErrorMessage));
             }
 
+            // login failed
+            LoginError fault = new LoginError();
+            fault.Result = 1;
+            fault.ErrorMessage = "Zły login lub hasło";
+            throw new FaultException<LoginError>(fault, new FaultReason(fault.ErrorMessage));
             
         }
 
@@ -137,29 +177,30 @@ namespace Bookstore_Service
             return 1;
         }
 
-        public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, int allOrAny)
+        public Book[] GetBooks(string title, string author, string category, string tag, double minScore, double maxScore, double minAge, double maxAge, string education, int allOrAny, string sessionToken)
         {
-            return Book.getBooks(title, author, category, tag, minScore, maxScore, allOrAny);
+            return Book.getBooks(title, author, category, tag, minScore, maxScore, minAge, maxAge, education, allOrAny);
             
         }
 
-        public Review[] GetReviews(int book_id)
+        public Review[] GetReviews(int book_id, string sessionToken)
         {
             return Review.getReviews(book_id);
 
         }
 
-        public String GetAverageScore(int book_id)
+        public String GetAverageScore(int book_id, string sessionToken)
         {
-            Review[] reviews = Review.getReviews(book_id);
-            double sum = 0.0;
-            foreach (Review r in reviews)
-            {
-                sum += r.score;
-            }
-
             try
             {
+                Review[] reviews = Review.getReviews(book_id);
+                double sum = 0.0;
+                foreach (Review r in reviews)
+                {
+                    sum += r.score;
+                }
+
+            
                 double res = sum / reviews.Length;
                 if (Double.NaN.Equals(res))
                 {
@@ -170,38 +211,102 @@ namespace Bookstore_Service
             }
             catch (Exception)
             {
-                return String.Format("{0:0.##}", 0.0); 
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Wystąpił błąd podczas pobierania średniej ocen";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage)); 
             }
 
         }
 
-        public OtherClient GetOtherClient(string login)
+        public OtherClient GetOtherClient(string login, string sessionToken)
         {
-            ClientS cs = new ClientS(login);
-            return new OtherClient(cs.login, cs.name,cs.age,cs.education,cs.preferredCat,cs.preferredCat2);
+            try
+            {
+                ClientS cs = new ClientS(login);
+                return new OtherClient(cs.login, cs.name,cs.age,cs.education,cs.preferredCat,cs.preferredCat2);
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Wystąpił błąd podczas pobierania profilu użytkownika";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
         }
 
-        public int AddReview(Review r)
+        public void AddReview(Review r, string sessionToken)
         {
-            ReviewS rs = new ReviewS(r);
-            rs.save();
-            return 0;
+            try
+            {
+                ReviewS rs = new ReviewS(r);
+                rs.save();
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Wystąpił błąd podczas dodawania recenzji";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
         }
 
-        public Tag[] GetTopTagsForBook(int book_id)
+        public Tag[] GetTopTagsForBook(int book_id, string sessionToken)
         {
-            return Tag.getTagsForBook(book_id);
+            try
+            {
+                return Tag.getTagsForBook(book_id);
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Wystąpił błąd podczas pobierania tagów";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
         }
 
-        public int AddTag(Tag t, int book_id)
+        public int AddTag(Tag t, int book_id, string sessionToken)
         {
-            TagS ts = new TagS(t);
-            return ts.addToBook(book_id);  
+            try
+            {
+                TagS ts = new TagS(t);
+                return ts.addToBook(book_id);
+            }
+            catch (Exception)
+            {
+                InternalError fault = new InternalError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Wystąpił błąd podczas pobierania tagów";
+                throw new FaultException<InternalError>(fault, new FaultReason(fault.ErrorMessage));
+            }
         }
 
-        public Category[] GetCategories()
+        public Category[] GetCategories(string sessionToken)
         {
             return Category.getCategories();
+        }
+
+        public Education[] GetEducationDegrees(string sessionToken)
+        {
+            return Education.getEducationDegrees();
+        }
+
+
+        bool validSessionToken(string login, string sessionToken)
+        {
+            if (loggedUsers[login].Contains(sessionToken))
+            {
+                return true;
+            }
+            else
+            {
+                InvalidSessionTokenError fault = new InvalidSessionTokenError();
+                fault.Result = 1;
+                fault.ErrorMessage = "Użytego nieważnego tokenu sesji";
+                throw new FaultException<InvalidSessionTokenError>(fault, new FaultReason(fault.ErrorMessage));
+            }
+             
         }
     }
 }

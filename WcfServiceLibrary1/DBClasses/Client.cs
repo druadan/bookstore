@@ -14,16 +14,17 @@ namespace Bookstore_Service.DBClasses
 {
     class ClientS : Client
     {
-        public String password;
+        public byte[] password;
 
         public ClientS(string login){
-               SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
-               con.Open();
-                
+
+                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString);
+                con.Open();
+
 
                 SqlDataAdapter loginAdapter = new SqlDataAdapter("SELECT * FROM bookstore.dbo.Client", con);
                 DataSet logins = new DataSet();
-                loginAdapter.Fill(logins,"Client");
+                loginAdapter.Fill(logins, "Client");
 
                 DataTable clientTable = logins.Tables["Client"];
                 DataColumn[] pk = new DataColumn[1];
@@ -34,7 +35,7 @@ namespace Bookstore_Service.DBClasses
 
                 if (userRow == null)
                 {
-                    throw new Exception("Couldn't find such user"); 
+                    throw new Exception("Couldn't find such user");
                 }
 
                 this.login = login;
@@ -42,7 +43,7 @@ namespace Bookstore_Service.DBClasses
                 this.surname = userRow["surname"].ToString();
                 this.address = userRow["address"].ToString();
                 this.loyal_client = Convert.ToInt32(userRow["loyal_client"].ToString());
-                this.password = userRow["password"].ToString();
+                this.password = (byte[])userRow["password"];
                 this.age = Convert.ToInt32(userRow["age"].ToString());
                 this.education = userRow["education"].ToString();
                 this.preferredCat = userRow["preferredCat"].ToString();

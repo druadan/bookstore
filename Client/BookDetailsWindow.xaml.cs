@@ -46,9 +46,9 @@ namespace Client
                 try
                 {
                     IBookstore proxy = factory.CreateChannel();
-                    reviewsList = new List<Review>(proxy.GetReviews(b.id));
-                    avgScoreTextBlock.Text = proxy.GetAverageScore(b.id);
-                    tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id));
+                    reviewsList = new List<Review>(proxy.GetReviews(b.id, App.sessionToken));
+                    avgScoreTextBlock.Text = proxy.GetAverageScore(b.id, App.sessionToken);
+                    tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id, App.sessionToken));
                 }
                 catch (FaultException<InternalError> err)
                 {
@@ -76,6 +76,7 @@ namespace Client
 
                 prevReviewButton.IsEnabled = reviewInd > 0;
                 nextReviewButton.IsEnabled = reviewsList.Count - 1 > reviewInd;
+                reviewAuthorBtn.IsEnabled = true;
             }
             else
             {
@@ -118,9 +119,9 @@ namespace Client
                         r.customer_login = "pr";
                         r.book_id = book.id;
 
-                        proxy.AddReview(r);
-                        reviewsList = new List<Review>(proxy.GetReviews(book.id));
-                        avgScoreTextBlock.Text = proxy.GetAverageScore(book.id);
+                        proxy.AddReview(r, App.sessionToken);
+                        reviewsList = new List<Review>(proxy.GetReviews(book.id, App.sessionToken));
+                        avgScoreTextBlock.Text = proxy.GetAverageScore(book.id, App.sessionToken);
                         reviewInd = 0;
                         refreshReviewView();
 
@@ -161,8 +162,8 @@ namespace Client
                         t.tag_id = addTagTB.Text;
 
 
-                        proxy.AddTag(t, book.id);
-                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id));
+                        proxy.AddTag(t, book.id, App.sessionToken);
+                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id, App.sessionToken));
 
 
                         addTagTB.Text = "";

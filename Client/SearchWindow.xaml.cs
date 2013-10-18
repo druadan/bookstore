@@ -22,15 +22,24 @@ namespace Client
         public SearchWindow()
         {
             InitializeComponent();
+            List<Category> catList;
+            List<Education> eduList;
             using (ChannelFactory<IBookstore> factory = new ChannelFactory<IBookstore>("BookstoreClient"))
             {
 
                 try
                 {
                     IBookstore proxy = factory.CreateChannel();
-                    List<Category> catList = new List<Category>(proxy.GetCategories());
+                    catList = new List<Category>();
                     catList.Add(new Category(""));
+                    catList.AddRange(proxy.GetCategories(App.sessionToken));
+
+                    eduList = new List<Education>();
+                    eduList.Add(new Education(""));
+                    eduList.AddRange(proxy.GetEducationDegrees(App.sessionToken));
+
                     categoryCB.ItemsSource = catList;
+                    reviewerEducationCB.ItemsSource = eduList;
                 }
                 catch (FaultException<InternalError> err)
                 {
@@ -61,7 +70,10 @@ namespace Client
                     double minScore = minScoreTB.Text.Equals("") ? double.NaN : double.Parse(minScoreTB.Text);
                     double maxScore = maxScoreTB.Text.Equals("") ? double.NaN : double.Parse(maxScoreTB.Text);
 
-                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryCB.Text, tagTextBox.Text, minScore, maxScore, (bool)allOrAny ? 0 : 1 );
+                    double minAge = reviewerAgeMinTB.Text.Equals("") ? double.NaN : double.Parse(reviewerAgeMinTB.Text);
+                    double maxAge = reviewerAgeMaxTB.Text.Equals("") ? double.NaN : double.Parse(reviewerAgeMaxTB.Text);
+
+                    booksList = proxy.GetBooks(titleTextBox.Text, authorTextBox.Text, categoryCB.Text, tagTextBox.Text, minScore, maxScore, minAge, maxAge, reviewerEducationCB.Text, (bool)allOrAny ? 0 : 1, App.sessionToken);
 
                     booksDataGrid.ItemsSource = new List<Book>(booksList);
                    
@@ -95,6 +107,8 @@ namespace Client
             Regex regex = new Regex("^[0-9]*[,.]?[0-9]*$");
             e.Handled = !regex.IsMatch(e.Text);
         }
+
+
 
     }
 }

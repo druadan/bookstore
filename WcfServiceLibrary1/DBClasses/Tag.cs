@@ -84,7 +84,7 @@ namespace Bookstore_Service.DBClasses
         {
             try
             {
-                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString + " Asynchronous Processing=true;" + "MultipleActiveResultSets=True;");
+                SqlConnection con = new SqlConnection(Bookstore.sqlConnectionString  + "MultipleActiveResultSets=True;");
                 con.Open();
 
                 String insert1 = "INSERT INTO bookstore.dbo.Tag (tag_id) VALUES (@tagID );";
@@ -97,8 +97,16 @@ namespace Bookstore_Service.DBClasses
                 cmd2.Parameters.AddWithValue("@tagID", tag_id);
                 cmd2.Parameters.AddWithValue("@bookID", book_id);
 
-                cmd1.BeginExecuteNonQuery();
-                cmd2.BeginExecuteNonQuery();
+                // such tag may already exists, so exception here is expected
+                try
+                {
+                    cmd1.ExecuteNonQuery();
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+                }
+
+                cmd2.ExecuteNonQuery();
                 return 0;
 
             }
