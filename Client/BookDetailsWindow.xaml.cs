@@ -50,7 +50,7 @@ namespace Client
                         IBookstore proxy = factory.CreateChannel();
                         reviewsList = new List<Review>(proxy.GetReviews(b.id, App.login, App.sessionToken));
                         avgScoreTextBlock.Text = proxy.GetAverageScore(b.id, App.login, App.sessionToken);
-                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(b.id, App.login, App.sessionToken));
+                        tagsLB.ItemsSource = new List<KeyValuePair<Tag, int>>(proxy.GetTopTagsForBook(b.id, App.login, App.sessionToken));
                
                 }
              }
@@ -175,9 +175,9 @@ namespace Client
 
 
                         proxy.AddTag(t, book.id, App.login, App.sessionToken);
-                        tagsLB.ItemsSource = new List<Tag>(proxy.GetTopTagsForBook(book.id, App.login, App.sessionToken));
+                        tagsLB.ItemsSource = new List<KeyValuePair<Tag, int>>(proxy.GetTopTagsForBook(book.id, App.login, App.sessionToken));
 
-
+                      //  new KeyValuePair<int, int>(1,2).
                         addTagTB.Text = "";
                    
                     }
@@ -193,7 +193,7 @@ namespace Client
         {
             if (tagsLB.SelectedItem != null)
             {
-                addTagTB.Text = tagsLB.SelectedItem.ToString();
+                addTagTB.Text = ((KeyValuePair<Tag,int>)tagsLB.SelectedItem).Key.ToString();
             }
         }
 

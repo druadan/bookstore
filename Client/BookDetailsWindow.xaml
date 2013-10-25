@@ -1,9 +1,9 @@
 ﻿<Window x:Class="Client.BookDetailsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BookDetailsWindow" Height="685" Width="582" Style="{StaticResource WindowStyle}">
+        Title="BookDetailsWindow" Height="685" Width="634" Style="{StaticResource WindowStyle}">
 
-    <Grid Height="606" Width="549">
+    <Grid Height="606" Width="612">
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Tytuł" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,32,0,0" Name="textBlock2" Text="Autor" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,52,0,0" Name="textBlock3" Text="Kategoria" VerticalAlignment="Top" />
@@ -22,7 +22,7 @@
         <Button Content="Następny komentarz" Height="23" HorizontalAlignment="Left" Margin="195,323,0,0" Name="nextReviewButton" VerticalAlignment="Top" Width="117" Click="nextReviewButton_Click" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,101,0,0" Name="textBlock7" Text="Średnia ocen" VerticalAlignment="Top" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="97,101,0,0" Name="avgScoreTextBlock" Text="TextBlock" VerticalAlignment="Top" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="365,12,0,0" Name="textBlock8" Text="Najpopularniejsze tagi" VerticalAlignment="Top" FontSize="15" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="368,12,0,0" Name="textBlock8" Text="Najpopularniejsze tagi" VerticalAlignment="Top" FontSize="15" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,366,0,0" Name="textBlock10" Text="Dodaj komentarz" VerticalAlignment="Top" FontSize="15" />
         <TextBox Height="106" HorizontalAlignment="Left" Margin="12,424,0,0" Name="newReviewContentTB" VerticalAlignment="Top" Width="306" />
         <Button Content="Dodaj komentarz" Height="23" HorizontalAlignment="Left" Margin="195,571,0,0" Name="sendReviewBtn" VerticalAlignment="Top" Width="123" Click="sendReviewBtn_Click" />
@@ -30,9 +30,10 @@
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="272,542,0,0" Name="newReviewScoreCB" VerticalAlignment="Top" Width="46" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,542,0,0" Name="textBlock11" Text="Ocena" VerticalAlignment="Top" />
         <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="97,164,0,0" Name="reviewAuthorBtn" VerticalAlignment="Top" Width="75" Click="reviewAuthorBtn_Click" />
-        <ListBox Height="119" HorizontalAlignment="Left" Margin="365,52,0,0" Name="tagsLB" VerticalAlignment="Top" Width="148" SelectionChanged="tagsLB_SelectionChanged" 
+       
+        <ListBox Height="119" HorizontalAlignment="Left" Margin="368,52,0,0" Name="tagsLB" VerticalAlignment="Top" Width="224" SelectionChanged="tagsLB_SelectionChanged" 
 
-            BorderBrush="Transparent" 
+         BorderBrush="Transparent" 
          Grid.IsSharedSizeScope="True"
          HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
@@ -42,17 +43,17 @@
                             <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold"  />
-                        <TextBox Grid.Column="1" Text="{Binding Value }" />
+                        <TextBlock Grid.Column="0" Text="{Binding Key.tag_id, Mode=OneWay }"   />
+                        <TextBlock Grid.Column="1" Text="{Binding Value, Mode=OneWay }" TextAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
         </ListBox>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="365,226,0,0" Name="addTagTB" VerticalAlignment="Top" Width="148" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="365,202,0,0" Name="textBlock12" Text="Nowy tag" VerticalAlignment="Top" />
-        <Button  Content="Dodaj tag" Height="23" HorizontalAlignment="Left" Margin="438,272,0,0" Name="addTagBtn" VerticalAlignment="Top" Width="75" Click="addTagBtn_Click" />
-        <Button  Content="Powrót" Height="23" HorizontalAlignment="Left" Margin="438,571,0,0" Name="prevWindowBtn" VerticalAlignment="Top" Width="75" Click="prevWindowBtn_Click" FontStretch="UltraExpanded">
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="444,226,0,0" Name="addTagTB" VerticalAlignment="Top" Width="148" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="368,202,0,0" Name="textBlock12" Text="Nowy tag" VerticalAlignment="Top" />
+        <Button  Content="Dodaj tag" Height="23" HorizontalAlignment="Left" Margin="517,273,0,0" Name="addTagBtn" VerticalAlignment="Top" Width="75" Click="addTagBtn_Click" />
+        <Button  Content="Powrót" Height="23" HorizontalAlignment="Left" Margin="517,571,0,0" Name="prevWindowBtn" VerticalAlignment="Top" Width="75" Click="prevWindowBtn_Click" FontStretch="UltraExpanded">
             <Button.Background>
                 <SolidColorBrush Color="Blue" x:Name="_back" />
             </Button.Background>

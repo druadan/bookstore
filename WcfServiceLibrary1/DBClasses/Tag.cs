@@ -6,6 +6,26 @@ using System.ServiceModel;
 
 namespace Bookstore_Service.DBClasses
 {
+
+    [DataContract]
+    public class TagsCount
+    {
+        [DataMember]
+        public Tag tag { get; set; }
+
+        [DataMember]
+        public int count { get; set; }
+
+
+        public override String ToString()
+        {
+            return tag.ToString() + " " + count ;
+        }
+
+
+
+    }
+
     [DataContract]
     public class Tag
     {
@@ -44,7 +64,7 @@ namespace Bookstore_Service.DBClasses
         {
         }
 
-        public static Tag[] getTagsForBook(int book_id)
+        public static List<KeyValuePair<Tag, int>> getTagsForBook(int book_id)
         {
             try
             {
@@ -63,14 +83,18 @@ namespace Bookstore_Service.DBClasses
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
-                List<Tag> tagsList = new List<Tag>();
+                List<KeyValuePair<Tag, int>> tagsList = new List<KeyValuePair<Tag, int>>();
 
                 while (rdr.Read())
                 {
+                   
                     Tag t = new Tag(rdr.GetString(0));
-                    tagsList.Add(t);
+                    int count = rdr.GetInt32(1);
+                   
+                    KeyValuePair<Tag, int> kv = new KeyValuePair<Tag, int>(t, count);
+                    tagsList.Add(kv);
                 }
-                return tagsList.ToArray();
+                return tagsList;
 
             }
             catch (Exception)

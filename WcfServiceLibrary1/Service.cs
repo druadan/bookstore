@@ -85,7 +85,7 @@ namespace Bookstore_Service
         [OperationContract]
         [FaultContract(typeof(InternalError))]
         [FaultContract(typeof(InvalidSessionTokenError))]
-        Tag[] GetTopTagsForBook(int book_id, string login, string sessionToken);
+        List<KeyValuePair<Tag, int>> GetTopTagsForBook(int book_id, string login, string sessionToken);
 
         [OperationContract]
         [FaultContract(typeof(InternalError))]
@@ -267,7 +267,7 @@ namespace Bookstore_Service
             }
         }
 
-        public Tag[] GetTopTagsForBook(int book_id, string login, string sessionToken)
+        public List<KeyValuePair<Tag, int>> GetTopTagsForBook(int book_id, string login, string sessionToken)
         {
             validateSessionToken(login, sessionToken);
             try
