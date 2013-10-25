@@ -104,40 +104,20 @@
                 <Border x:Name="Border"
             Grid.ColumnSpan="2"
             CornerRadius="2"
-            BorderThickness="1">
-                    <Border.BorderBrush>
-                        <LinearGradientBrush EndPoint="0,1"
-                             StartPoint="0,0">
-                            <GradientStop Color="{DynamicResource BorderLightColor}"
-                        Offset="0" />
-                            <GradientStop Color="{DynamicResource BorderDarkColor}"
-                        Offset="1" />
-                        </LinearGradientBrush>
-                    </Border.BorderBrush>
+            BorderThickness="1"
+            Background="LightGray"
+                        >
                     
-                    
-                    <Border.Background>
-
-                        <LinearGradientBrush StartPoint="0,0"
-                             EndPoint="0,1">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStopCollection>
-                                    <GradientStop Color="{DynamicResource ControlLightColor}" />
-                                    <GradientStop Color="{DynamicResource ControlMediumColor}"
-                            Offset="1.0" />
-                                </GradientStopCollection>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-
-                    </Border.Background>
+            
                     
                 </Border>
                 <Border Grid.Column="0"
             CornerRadius="2,0,0,2"
-            Margin="1" >
-                    <Border.Background>
-                        <SolidColorBrush Color="{DynamicResource ControlLightColor}"/>
-                    </Border.Background>
+            Margin="1" 
+            Background="LightBlue"
+
+                        >
+                    
                 </Border>
                 
                 <Path x:Name="Arrow"
@@ -199,13 +179,7 @@
                             HorizontalAlignment="Left">
                             </ContentPresenter>
                             
-                            <TextBox x:Name="PART_EditableTextBox"
-                   Style="{x:Null}"
-                   Template="{StaticResource ComboBoxTextBox}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Margin="3,3,23,3"
-                   Focusable="True"
+                            <TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Template="{StaticResource ComboBoxTextBox}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="3,3,23,3" Focusable="True"
                    Background="Transparent"
                    Visibility="Hidden"
                    IsReadOnly="{TemplateBinding IsReadOnly}" />
