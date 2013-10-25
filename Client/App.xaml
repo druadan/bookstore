@@ -15,7 +15,7 @@
         
         
         <Style  TargetType="Button">
-            <Setter Property="Background" Value="#FF80D4DF" />
+            <Setter Property="Background" Value="LightGray" />
         </Style>
 
         <Style  TargetType="TextBlock">
@@ -24,20 +24,82 @@
         
         <Style  TargetType="TextBox">
             <Setter Property="Background" Value="#FFFEC56B" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <Rectangle Margin="0,0,0,0" RadiusX="10" RadiusY="10"/>
+                            <Border Margin="0" BorderBrush="White" Background="LightGray" BorderThickness="1,1,1,1" CornerRadius="8,8,8,8">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                        </Grid>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
+      
+
+
+
+
+        <Style  TargetType="ComboBox">
+            <Setter Property="Background" Value="#FFFEC56B" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid>
+                                <Rectangle Margin="5,5,0,0" RadiusX="8" RadiusY="8"/>
+                                <Border Margin="4" BorderBrush="White" Background="LightGray" BorderThickness="1,1,1,1" CornerRadius="8,8,8,8">
+
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
         <Style  TargetType="ListBox">
             <Setter Property="Background" Value="#FFFEC56B" />
         </Style>
         
         <Style  TargetType="PasswordBox">
             <Setter Property="Background" Value="#FFFEC56B" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Grid>
+                            <Rectangle Margin="0,0,0,0" RadiusX="10" RadiusY="10"/>
+                            <Border Margin="0" BorderBrush="White" Background="LightGray" BorderThickness="1,1,1,1" CornerRadius="8,8,8,8">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
+
 
         <Storyboard x:Key="buttonAnim">
             <ColorAnimation Storyboard.TargetName="_back" Storyboard.TargetProperty="Color" To="Red" />
         </Storyboard>
 
         <BitmapImage x:Key="MyImageSource" UriSource="Resources/bookstore.gif" />
+
+
+        
+
+        
+
+        <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
+
+       
+        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
 
     </Application.Resources>
 </Application>

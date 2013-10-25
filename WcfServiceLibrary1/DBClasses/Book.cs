@@ -85,7 +85,7 @@ namespace Bookstore_Service.DBClasses
                      titleB || authorB || categoryB || tagB || educationB || agesAnyB || scoresAnyB ? " WHERE " : "",
                      titleB ? "title LIKE @titleCond" : "", titleB && (authorB || categoryB || tagB || scoresAnyB || agesAnyB || educationB) ? s : "",
                      authorB ? "author LIKE @authorCond" : "", authorB && (categoryB || tagB || scoresAnyB || agesAnyB || educationB) ? s : "",
-                     categoryB ? "category LIKE @categoryCond" : "", categoryB && (tagB || scoresAnyB || agesAnyB || educationB) ? s : "",
+                     categoryB ? "category = @categoryCond" : "", categoryB && (tagB || scoresAnyB || agesAnyB || educationB) ? s : "",
                      tagB ? "tag_id LIKE @tagCond " : "", tagB && (scoresAnyB || agesAnyB || educationB) ? s : "",
                      scoresAnyB || agesAnyB || educationB ? scoreSubquery : ""
                      );
@@ -104,7 +104,7 @@ namespace Bookstore_Service.DBClasses
                  }
                  if (categoryB)
                  {
-                     cmd.Parameters.AddWithValue("@categoryCond", "%" + category + "%");
+                     cmd.Parameters.AddWithValue("@categoryCond", category );
                  }
                  if (tagB)
                  {
