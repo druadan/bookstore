@@ -14,6 +14,7 @@ namespace Client
         public LogonWindow()
         {
             InitializeComponent();
+            App.init();
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -30,11 +31,9 @@ namespace Client
                     App.sessionToken = obtaintedToken;
                     App.login = loginTextBox.Text;
 
-
                     // here we initialize some components which valid connection to server
                     App.searchWindow.init();
-                   
-                    
+
                     App.nextWindow(this, App.mainWindow);
                     passwordTextBox.Password = "";
                     

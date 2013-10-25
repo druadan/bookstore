@@ -217,7 +217,7 @@ VALUES
 
 
 DROP login adm ;
-CREATE login adm with password = 'adm';
+CREATE login adm with password = 'admadmadm1!@';
 DROP USER adm;
 CREATE USER adm from login adm;
 EXEC sp_addrolemember 'db_owner', 'adm'
